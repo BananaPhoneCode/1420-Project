@@ -7,25 +7,30 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="506.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
    <children>
-      <Label fx:id="nameLabel" layoutX="131.0" layoutY="227.0" text="Hello:">
+      <Label fx:id="nameLabel" layoutX="204.0" layoutY="263.0" text="Hello:">
          <font>
             <Font size="30.0" />
          </font>
       </Label>
-      <MenuBar layoutY="1.0" prefHeight="22.0" prefWidth="506.0">
+      <MenuBar prefHeight="27.0" prefWidth="780.0">
         <menus>
           <Menu mnemonicParsing="false" text="Menu">
             <items>
               <MenuItem mnemonicParsing="false" text="Dashboard" />
-                  <MenuItem mnemonicParsing="false" text="Subject Management" />
+                  <MenuItem mnemonicParsing="false" onAction="#SubjectMethod" text="Subject Management" />
                   <MenuItem mnemonicParsing="false" text="Course Management" />
                   <MenuItem mnemonicParsing="false" text="Student Management" />
                   <MenuItem mnemonicParsing="false" text="Faculty Management" />
                   <MenuItem mnemonicParsing="false" text="Event Management" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Edit">
+              <items>
+                <MenuItem mnemonicParsing="false" text="Action 1" />
+              </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="HOLD ME NOW">
             <items>
               <MenuItem mnemonicParsing="false" text="I'M 6 FEET FROM THE EDGE" />
@@ -33,5 +38,11 @@
           </Menu>
         </menus>
       </MenuBar>
+      <Label fx:id="labelPassword" layoutX="204.0" layoutY="309.0" text="Hello:">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Label>
+      <Label layoutX="144.0" layoutY="398.0" prefHeight="18.0" prefWidth="491.0" text="Labels are just here so I can check if the Username and Password are saved stored correctly" textOverrun="CENTER_ELLIPSIS" wrapText="true" />
    </children>
 </AnchorPane>
