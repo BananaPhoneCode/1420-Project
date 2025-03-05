@@ -17,10 +17,6 @@ public class LoginController {
     @FXML
     TextField Password;
 
-    private Stage stage;
-    private Scene scene;
-    private Parent root;
-
     public void login(ActionEvent event) throws IOException {
 
         String username = Username.getText();
@@ -28,14 +24,11 @@ public class LoginController {
 
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Management.fxml"));
-        root = loader.load();
-
-        ManagementController ManagementControl = loader.getController();
-        ManagementControl.displayName(username, password);
+        Parent root = loader.load();
 
         //root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
-        stage = (Stage)((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
