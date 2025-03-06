@@ -46,33 +46,34 @@ public class ManagementController implements Initializable {
     ImageView EveManagement;
     //Subject Class @FXML:
     @FXML
-    private TableView<Subject> table;
+    private TableView<Subject> table = new TableView<>();
     @FXML
-    private TableColumn<Subject, String> SubjectName;
+    private TableColumn<Subject, String> SubjectName = new TableColumn<>();
     @FXML
-    private TableColumn<Subject, String> SubjectCode;
-
+    private TableColumn<Subject, String> SubjectCode = new TableColumn<>();
+    //Course Class @ FXML;
+    @FXML
+    private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
+    @FXML
+    private ListView<String> EnrollmentListView = new ListView<>(); //allows user to scroll through enrollment
+    private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
     @FXML
     private AnchorPane pane1,pane2;
-    ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList(
-            new Subject("MATH2", "Calculus2"),
-            new Subject("PHYS13", "Physics13")
-    );
-        /*ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
-        for(int i = 0; !Objects.equals(currentSubjectList.get(i).getSubjectName(), "");i++){
-            subjectTableViewList.add(currentSubjectList.get(i));
-        }*/
-
+    ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList();
+    ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
 
     public ManagementController() throws IOException {
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Subject
-        //SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
-        //SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
-        //table.setItems(subjectTableViewList);
+        //Initialize Subject List
+        subjectTableViewList.addAll(currentSubjectList);
+        SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
+        SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
+        table.setItems(subjectTableViewList);
+        // Course
+        coursesListView.getItems().addAll(Courses);
         pane1.setVisible(false);
 
         // Initial animations
