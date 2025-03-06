@@ -3,7 +3,7 @@ package com.example._1420project;
 public class Subject{
     private final String SubjectName;
     private final String SubjectCode;
-    public Subject(String SN, String SC){
+    public Subject(String SC, String SN){
         this.SubjectName = SN;
         this.SubjectCode = SC;
     }

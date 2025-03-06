@@ -10,9 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.Node;
@@ -46,11 +44,17 @@ public class ManagementController implements Initializable {
     ImageView EveManagement;
     //Subject Class @FXML:
     @FXML
-    private TableView<Subject> table = new TableView<>();
+    private TableView<Subject> subjectTable = new TableView<>();
     @FXML
     private TableColumn<Subject, String> SubjectName = new TableColumn<>();
     @FXML
     private TableColumn<Subject, String> SubjectCode = new TableColumn<>();
+    Button subjectAdd = new Button();
+    @FXML
+    TextField subjectCodeTxt = new TextField();
+    @FXML
+    TextField subjectNameTxt = new TextField();
+
     //Course Class @ FXML;
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
@@ -71,7 +75,7 @@ public class ManagementController implements Initializable {
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
-        table.setItems(subjectTableViewList);
+        subjectTable.setItems(subjectTableViewList);
         // Course
         coursesListView.getItems().addAll(Courses);
         pane1.setVisible(false);
@@ -192,5 +196,9 @@ public class ManagementController implements Initializable {
             e.printStackTrace();
             // Show an error message to the user
         }
+    }
+    public void subjectAddButton(ActionEvent event) throws IOException{
+        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
+        new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
     }
 }
