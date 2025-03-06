@@ -2,10 +2,18 @@ package com.example._1420project;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.TranslateTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -16,6 +24,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -35,12 +44,35 @@ public class ManagementController implements Initializable {
     ImageView FacManagement;
     @FXML
     ImageView EveManagement;
+    //Subject Class @FXML:
+    @FXML
+    private TableView<Subject> table;
+    @FXML
+    private TableColumn<Subject, String> SubjectName;
+    @FXML
+    private TableColumn<Subject, String> SubjectCode;
 
     @FXML
     private AnchorPane pane1,pane2;
+    ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList(
+            new Subject("MATH2", "Calculus2"),
+            new Subject("PHYS13", "Physics13")
+    );
+        /*ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
+        for(int i = 0; !Objects.equals(currentSubjectList.get(i).getSubjectName(), "");i++){
+            subjectTableViewList.add(currentSubjectList.get(i));
+        }*/
+
+
+    public ManagementController() throws IOException {
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Subject
+        //SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
+        //SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
+        //table.setItems(subjectTableViewList);
         pane1.setVisible(false);
 
         // Initial animations
@@ -61,6 +93,7 @@ public class ManagementController implements Initializable {
             fadeTransition.setOnFinished(event1 -> pane1.setVisible(false));
             createTranslateTransition(pane2, -600, ANIMATION_DURATION).play();
         });
+
     }
 
     private FadeTransition createFadeTransition(Node node, double from, double to, Duration duration) {

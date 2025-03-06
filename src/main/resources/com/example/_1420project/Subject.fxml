@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
    <children>
+      <TableView fx:id="table" layoutX="494.0" layoutY="52.0" prefHeight="611.0" prefWidth="286.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="494.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
+        <columns>
+          <TableColumn fx:id="SubjectCode" prefWidth="144.79998475313187" text="Subject Code" />
+          <TableColumn fx:id="SubjectName" minWidth="0.0" prefWidth="144.0000457763672" text="Subject Name" />
+        </columns>
+      </TableView>
       <AnchorPane layoutX="290.0" prefHeight="52.0" prefWidth="780.0" style="-fx-background-color: #FFA500;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <ImageView fx:id="menu" fitHeight="46.0" fitWidth="52.0" layoutX="26.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
@@ -57,11 +60,6 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="400.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Gray;">
-         <children>
-            <Text layoutX="35.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the Subjects Page" />
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
@@ -101,7 +99,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="pane2" prefHeight="611.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
+      <AnchorPane fx:id="pane2" opacity="0.0" prefHeight="611.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
          <children>
             <VBox layoutY="28.0" prefHeight="583.0" prefWidth="178.0" spacing="28.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                <children>
@@ -139,5 +137,24 @@
             </VBox>
          </children>
       </AnchorPane>
+      <TextField alignment="CENTER" editable="false" layoutX="494.0" prefHeight="52.0" prefWidth="286.0" style="-fx-background-color: #FFA500;" text="Subject Managment" AnchorPane.bottomAnchor="612.0" AnchorPane.leftAnchor="494.0" AnchorPane.rightAnchor="-0.7999999999999545" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </TextField>
+      <Button layoutX="236.0" layoutY="394.0" mnemonicParsing="false" prefHeight="28.0" prefWidth="110.0" text="Add" />
+      <TextField layoutX="114.0" layoutY="358.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField layoutX="303.0" layoutY="358.0" prefHeight="26.0" prefWidth="178.0" />
+      <Label layoutX="325.0" layoutY="327.0" prefHeight="26.0" prefWidth="134.0" text="Subject Name">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="327.0" prefHeight="26.0" prefWidth="134.0" text="Subject Code">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="210.0" layoutY="435.0" text="Changes excel file permanently" />
    </children>
 </AnchorPane>
