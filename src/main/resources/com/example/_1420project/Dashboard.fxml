@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
    <children>
-      <AnchorPane layoutX="290.0" prefHeight="52.0" prefWidth="780.0" style="-fx-background-color: #FFA500;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <AnchorPane prefHeight="52.0" prefWidth="780.0" style="-fx-background-color: #FFA500;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <ImageView fx:id="menu" fitHeight="46.0" fitWidth="52.0" layoutX="26.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -16,7 +16,12 @@
             </ImageView>
          </children>
       </AnchorPane>
-      <AnchorPane layoutY="56.0" prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.leftAnchor="0.0">
+      <AnchorPane layoutX="404.0" layoutY="251.0" prefHeight="52.0" prefWidth="200.0" style="-fx-background-color: Gray;">
+         <children>
+            <Text layoutX="28.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the Dashboard Page" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="52.0" prefHeight="559.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.leftAnchor="0.0">
          <children>
             <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
                <children>
@@ -54,13 +59,8 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="400.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Gray;">
-         <children>
-            <Text layoutX="34.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the Students Page" />
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+      <AnchorPane prefHeight="560.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
             <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
                <children>

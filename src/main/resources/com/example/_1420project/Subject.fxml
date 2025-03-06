@@ -1,14 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example._1420project.Subject"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
+   <children>
+      <TableView fx:id="subjectTable" layoutX="494.0" layoutY="52.0" prefHeight="611.0" prefWidth="286.0" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0">
+        <columns>
+          <TableColumn fx:id="SubjectCode" prefWidth="144.79998475313187" text="Subject Code" />
+          <TableColumn fx:id="SubjectName" minWidth="0.0" prefWidth="144.0000457763672" text="Subject Name" />
+        </columns>
+      </TableView>
+      <AnchorPane layoutX="290.0" prefHeight="52.0" prefWidth="780.0" style="-fx-background-color: #FFA500;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <ImageView fx:id="menu" fitHeight="46.0" fitWidth="52.0" layoutX="26.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/3Dashes.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutY="56.0" prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.leftAnchor="0.0">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
+               <children>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/House.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/Openedbook-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="52.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/CourseIcon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="60.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/Person-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/Faculty-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../../../Pictures/Calendar-Clipart.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <AnchorPane prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+         <children>
+            <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
+               <children>
+                  <ImageView fx:id="DashManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/House.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="SubManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/Openedbook-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="CouManagement" fitHeight="52.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/CourseIcon.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="StuManagement" fitHeight="60.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/Person-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="FacManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/Faculty-Clipart.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="EveManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/Calendar-Clipart.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <TextField alignment="CENTER" editable="false" layoutX="494.0" prefHeight="52.0" prefWidth="286.0" style="-fx-background-color: #FFA500;" text="Subject Managment" AnchorPane.rightAnchor="-0.7999999999999545" AnchorPane.topAnchor="0.0">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </TextField>
+      <Button layoutX="236.0" layoutY="394.0" mnemonicParsing="false" onAction="#subjectAddButton" prefHeight="28.0" prefWidth="110.0" text="Add" />
+      <TextField fx:id="subjectCodeTxt" layoutX="114.0" layoutY="358.0" prefHeight="26.0" prefWidth="178.0" />
+      <TextField fx:id="subjectNameTxt" layoutX="303.0" layoutY="358.0" prefHeight="26.0" prefWidth="178.0" />
+      <Label layoutX="325.0" layoutY="327.0" prefHeight="26.0" prefWidth="134.0" text="Subject Name">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="138.0" layoutY="327.0" prefHeight="26.0" prefWidth="134.0" text="Subject Code">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Label>
+      <Label layoutX="210.0" layoutY="435.0" text="Changes excel file permanently" />
+      <AnchorPane fx:id="pane2" prefHeight="611.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
+         <children>
+            <VBox layoutY="28.0" prefHeight="583.0" prefWidth="178.0" spacing="28.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+               <children>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#dashboard" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Dashboard">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#subject" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Subject Management">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#course" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Course Management">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#student" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Student Management">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#faculty" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Faculty Management">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#event" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Event Management">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+   </children>
 </AnchorPane>
