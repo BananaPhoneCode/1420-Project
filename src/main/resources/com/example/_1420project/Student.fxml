@@ -54,11 +54,6 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="400.0" layoutY="142.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Gray;">
-         <children>
-            <Text layoutX="34.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the Students Page" />
-         </children>
-      </AnchorPane>
       <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       <AnchorPane prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
          <children>
@@ -136,5 +131,10 @@
             </VBox>
          </children>
       </AnchorPane>
+      <Button layoutX="309.0" layoutY="75.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Profile" />
+      <Button layoutX="550.0" layoutY="75.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="Edit Profile" />
+      <Button layoutX="309.0" layoutY="168.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Enrolled Classes" />
+      <Button layoutX="550.0" layoutY="168.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Grades" />
+      <Button layoutX="309.0" layoutY="264.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Tuition Status" />
    </children>
 </AnchorPane>
