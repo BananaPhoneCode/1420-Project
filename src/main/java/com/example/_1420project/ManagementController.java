@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,7 +55,12 @@ public class ManagementController implements Initializable {
     TextField subjectCodeTxt = new TextField();
     @FXML
     TextField subjectNameTxt = new TextField();
-
+    @FXML
+    TextField subjectDeleteTxt = new TextField();
+    @FXML
+    TextField subjectSearchBar = new TextField();
+    @FXML
+    AnchorPane subjectAddButtonMenu, subjectDeleteButtonMenu, subjectEditButtonMenu;
     //Course Class @ FXML;
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
@@ -64,6 +70,7 @@ public class ManagementController implements Initializable {
     @FXML
     private AnchorPane pane1,pane2;
     ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList();
+    ObservableList<Subject> subjectSearchTableViewList = FXCollections.observableArrayList();
     ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
 
     public ManagementController() throws IOException {
@@ -71,11 +78,13 @@ public class ManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //Initialize Subject List
+
+        //Initialize Subject List and Subject Admin Menu Buttons
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
         subjectTable.setItems(subjectTableViewList);
+
         // Course
         coursesListView.getItems().addAll(Courses);
         pane1.setVisible(false);
@@ -99,6 +108,7 @@ public class ManagementController implements Initializable {
             createTranslateTransition(pane2, -600, ANIMATION_DURATION).play();
         });
 
+
     }
 
     private FadeTransition createFadeTransition(Node node, double from, double to, Duration duration) {
@@ -121,6 +131,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,12 +141,14 @@ public class ManagementController implements Initializable {
 
     public void subject(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Subject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SubjectAdmin.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
             // Show an error message to the user
@@ -149,6 +162,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,6 +177,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,6 +192,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,14 +207,83 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             // Show an error message to the user
         }
     }
+    //Subject Page Buttons
     public void subjectAddButton(ActionEvent event) throws IOException{
         subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
     }
+    public void subjectRemoveButton(ActionEvent event) throws IOException{
+        if(subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()){}
+        else{
+            System.err.println("DELETE "+subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
+            currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
+            subjectTableViewList.setAll(currentSubjectList);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
+    public void searchSubjectList(ActionEvent event) throws IOException{
+        subjectSearchTableViewList.clear();
+        for(Subject subject : currentSubjectList){
+            if(subject.getSubjectName().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())
+                    || subject.getSubjectCode().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())){
+                subjectSearchTableViewList.add(subject);
+            }
+        }
+        if(subjectSearchBar.getText().equals("")){subjectTable.setItems(subjectTableViewList);}
+        else{subjectTable.setItems(subjectSearchTableViewList);}
+    }
+    static boolean subjectAddButtonState=false;
+    static boolean subjectDeleteButtonState=false;
+    static boolean subjectEditButtonState=false;
+    public void showAddButton(ActionEvent event) throws IOException{
+        if(!subjectAddButtonState) {
+            subjectAddButtonState=true;
+            subjectDeleteButtonState=false;
+            subjectEditButtonState=false;
+            subjectAddButtonMenu.setVisible(true);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(false);
+        }
+        else{
+            subjectAddButtonState=false;
+            subjectAddButtonMenu.setVisible(false);
+        }
+    }
+    public void showDeleteButton(ActionEvent event) throws IOException{
+        if(!subjectDeleteButtonState) {
+            subjectAddButtonState=false;
+            subjectDeleteButtonState=true;
+            subjectEditButtonState=false;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(true);
+            subjectEditButtonMenu.setVisible(false);
+        }
+        else{
+            subjectDeleteButtonState=false;
+            subjectDeleteButtonMenu.setVisible(false);
+        }
+    }
+    public void showEditButton(ActionEvent event) throws IOException{
+        if(!subjectEditButtonState) {
+            subjectAddButtonState=false;
+            subjectDeleteButtonState=false;
+            subjectEditButtonState=true;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(true);
+        }
+        else{
+            subjectEditButtonState=false;
+            subjectEditButtonMenu.setVisible(false);
+        }
+    }
+    //End of Subject Page Buttons
 }

@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import org.controlsfx.control.action.Action;
+
 import java.util.Arrays;
 
 public class LoginController {
@@ -100,6 +102,7 @@ public class LoginController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -109,6 +112,7 @@ public class LoginController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -118,6 +122,7 @@ public class LoginController {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -127,5 +132,8 @@ public class LoginController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    public void bypass(ActionEvent event) throws IOException{
+        navigateToManagement(event);
     }
 }

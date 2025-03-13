@@ -19,16 +19,12 @@ public class EditSubjectList{
     }
     public ArrayList<Subject> Generate() throws IOException {
         String[] SubjectOUT;
-        for(int rowNum=1;; rowNum++){
-            Row r = sheet.getRow(rowNum);
-            String tempName = formatter.formatCellValue(r.getCell(0));
-            String tempCode = formatter.formatCellValue(r.getCell(1));
-            if(Objects.equals(tempName, "")){break;}
-            Subject selecSubject = new Subject(tempName, tempCode);
+        for(Row row : sheet){
+            String tempName = formatter.formatCellValue(row.getCell(0));
+            String tempCode = formatter.formatCellValue(row.getCell(1));
+            Subject selecSubject = new Subject(tempName,tempCode);
             subjectList.add(selecSubject);
-
         }
-
         return subjectList;
     }
     public void Add(String SubNameIN, String SubCodeIN) throws FileNotFoundException {
@@ -50,17 +46,13 @@ public class EditSubjectList{
             throw new RuntimeException(e);
         }
     }
-    public void Remove(String SubNameIN){
-        int subjectRemoveIndex=(0);
+    public void Remove(Subject SubIN) throws FileNotFoundException{
         for(Row row : sheet){
-            if(Objects.equals(formatter.formatCellValue(row.getCell(0)), SubNameIN)){
-                break;
+            if(Objects.equals(SubIN.getSubjectCode(), row.getCell(0).getStringCellValue())|| Objects.equals(SubIN.getSubjectName(), row.getCell(1).getStringCellValue())){
+                row.getCell(0).setBlank();
+                row.getCell(1).setBlank();
             }
-            subjectRemoveIndex++;
         }
-
-        sheet.removeRow(sheet.getRow(subjectRemoveIndex));
-        sheet.shiftRows(subjectRemoveIndex, sheet.getLastRowNum(), -1, true, true);
         try(OutputStream fileOut = new FileOutputStream(path)) {
             xssfWorkbook.write(fileOut);
         } catch (IOException e) {
