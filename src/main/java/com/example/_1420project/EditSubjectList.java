@@ -20,6 +20,7 @@ public class EditSubjectList{
     public ArrayList<Subject> Generate() throws IOException {
         String[] SubjectOUT;
         for(Row row : sheet){
+            if(row.getRowNum()==0){continue;}
             String tempName = formatter.formatCellValue(row.getCell(0));
             String tempCode = formatter.formatCellValue(row.getCell(1));
             Subject selecSubject = new Subject(tempName,tempCode);
