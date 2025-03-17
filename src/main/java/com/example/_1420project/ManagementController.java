@@ -220,7 +220,7 @@ public class ManagementController implements Initializable {
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
     }
     public void subjectRemoveButton(ActionEvent event) throws IOException{
-        if(subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()){}
+        if(subjectTable.getSelectionModel().isEmpty()){}
         else{
             System.err.println("DELETE "+subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());

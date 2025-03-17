@@ -50,8 +50,7 @@ public class EditSubjectList{
     public void Remove(Subject SubIN) throws FileNotFoundException{
         for(Row row : sheet){
             if(Objects.equals(SubIN.getSubjectCode(), row.getCell(0).getStringCellValue())|| Objects.equals(SubIN.getSubjectName(), row.getCell(1).getStringCellValue())){
-                row.getCell(0).setBlank();
-                row.getCell(1).setBlank();
+
             }
         }
         try(OutputStream fileOut = new FileOutputStream(path)) {
