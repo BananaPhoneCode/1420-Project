@@ -11,16 +11,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class SubjectController {
-
-    public void add(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Management.fxml"));
-        Parent root = loader.load();
-
-        //root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("Login.fxml")));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+public class SubjectController extends ManagementController{
+    public SubjectController() throws IOException {
+    }
+    public void buttonnn(ActionEvent event) throws IOException{
+        System.err.println("AHHHHHHHHHHHHH");
     }
 }

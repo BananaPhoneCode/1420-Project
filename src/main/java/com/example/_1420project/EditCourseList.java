@@ -7,28 +7,33 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class EditSubjectList{
-    public ArrayList<Subject> subjectList = new ArrayList<>();
+public class EditCourseList{
+    public ArrayList<Course> courseList = new ArrayList<>();
     public DataFormatter formatter = new DataFormatter();
     public String path = "src/UMS_Data.xlsx";
     public FileInputStream fileInputStream = new FileInputStream(path);
     public XSSFWorkbook xssfWorkbook = new XSSFWorkbook(fileInputStream);
-    public Sheet sheet = xssfWorkbook.getSheet("Subjects");
+    public Sheet sheet = xssfWorkbook.getSheet("Courses");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
-    public EditSubjectList() throws IOException {
+    public EditCourseList() throws IOException {
     }
-    public ArrayList<Subject> Generate() throws IOException {
-        String[] SubjectOUT;
+    //The Excel sheet data for Course
+    public ArrayList<Course> Generate() throws IOException {
+        String[] CourseOUT;
         for(Row row : sheet){
-            if(row.getRowNum()==0){continue;}
+            if(row.getRowNum()==0){
+                continue;
+            }
             String tempName = formatter.formatCellValue(row.getCell(0));
             String tempCode = formatter.formatCellValue(row.getCell(1));
-            Subject selecSubject = new Subject(tempName,tempCode);
-            subjectList.add(selecSubject);
+            String tempSection = formatter.formatCellValue(row.getCell(2));
+            String tempLecture = formatter.formatCellValue(row.getCell(3));
+            Course selectedCourse = new Course(tempName,tempCode, tempSection, tempLecture);
+            courseList.add(selectedCourse);
         }
-        return subjectList;
+        return courseList;
     }
-    public void Add(String SubNameIN, String SubCodeIN) throws FileNotFoundException {
+    public void Add(String CourseNameIN, String CourseCodeIN, String CourseSectionIN, String CourseLectureIN) throws FileNotFoundException {
         int nextEmpty=0;
         for(Row row : sheet){
             if(formatter.formatCellValue(row.getCell(0))==""){
@@ -38,18 +43,22 @@ public class EditSubjectList{
         }
         Row row = sheet.createRow(nextEmpty);
         Cell cellName = row.createCell(0);
-        cellName.setCellValue(SubNameIN);
+        cellName.setCellValue(CourseNameIN);
         Cell cellCode = row.createCell(1);
-        cellCode.setCellValue(SubCodeIN);
+        cellCode.setCellValue(CourseCodeIN);
+        Cell cellSection = row.createCell(2);
+        cellCode.setCellValue(CourseSectionIN);
+        Cell cellLecture = row.createCell(3);
+        cellCode.setCellValue(CourseLectureIN);
         try(OutputStream fileOut = new FileOutputStream(path)) {
             xssfWorkbook.write(fileOut);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public void Remove(Subject SubIN) throws FileNotFoundException{
+    public void Remove(Course CourseIN) throws FileNotFoundException{
         for(Row row : sheet){
-            if(Objects.equals(SubIN.getSubjectCode(), row.getCell(0).getStringCellValue())|| Objects.equals(SubIN.getSubjectName(), row.getCell(1).getStringCellValue())){
+            if(Objects.equals(CourseIN.getCourseCode(), row.getCell(0).getStringCellValue())|| Objects.equals(CourseIN.getCourseName(), row.getCell(1).getStringCellValue())){
                 row.getCell(0).setBlank();
                 row.getCell(1).setBlank();
             }

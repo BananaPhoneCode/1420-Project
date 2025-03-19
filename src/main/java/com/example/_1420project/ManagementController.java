@@ -19,6 +19,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
@@ -54,16 +55,52 @@ public class ManagementController implements Initializable {
     TextField subjectCodeTxt = new TextField();
     @FXML
     TextField subjectNameTxt = new TextField();
+    @FXML
+    TextField subjectDeleteTxt = new TextField();
+    @FXML
+    TextField subjectSearchBar = new TextField();
+    @FXML
+    AnchorPane subjectAddButtonMenu, subjectDeleteButtonMenu, subjectEditButtonMenu;
 
+    //COURSE PAGE - AISHA
     //Course Class @ FXML;
+    //Course Table
+    @FXML
+    private TableView<Course> courseTable = new TableView<>();
+    @FXML
+    private TableColumn<Course, String> CourseName = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseCode = new TableColumn<>();
+
+    @FXML
+    AnchorPane courseAddButtonMenu, courseDeleteButtonMenu, courseEditButtonMenu;
+
+    @FXML
+    TextField courseCodeTxt = new TextField();
+    @FXML
+    TextField courseNameTxt = new TextField();
+    @FXML
+    TextField courseDeleteTxt = new TextField();
+    @FXML
+    TextField courseSearchBar = new TextField();
+
+    @FXML
+    private AnchorPane pane3, pane4;
+    ObservableList<Course> courseTableViewList = FXCollections.observableArrayList();
+    ObservableList<Course> courseSearchTableViewList = FXCollections.observableArrayList();
+    ArrayList<Course> currentCourseList = new EditCourseList().Generate();
+
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
+
     @FXML
     private ListView<String> EnrollmentListView = new ListView<>(); //allows user to scroll through enrollment
     private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
+
     @FXML
-    private AnchorPane pane1,pane2;
+    private AnchorPane pane1, pane2;
     ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList();
+    ObservableList<Subject> subjectSearchTableViewList = FXCollections.observableArrayList();
     ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
 
     public ManagementController() throws IOException {
@@ -71,13 +108,20 @@ public class ManagementController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //Initialize Subject List
+
+        //Initialize Subject List and Subject Admin Menu Buttons
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
         subjectTable.setItems(subjectTableViewList);
-        // Course
-        coursesListView.getItems().addAll(Courses);
+
+        //COURSE
+        //Course Table Setup
+        courseTableViewList.addAll(currentCourseList);
+        CourseCode.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseCode"));
+        CourseName.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseName"));
+        courseTable.setItems(courseTableViewList);
+
         pane1.setVisible(false);
 
         // Initial animations
@@ -121,6 +165,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -130,18 +175,21 @@ public class ManagementController implements Initializable {
 
     public void subject(ActionEvent event) throws IOException {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Subject.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("SubjectAdmin.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
             // Show an error message to the user
         }
     }
 
+    //course
     public void course(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Course.fxml"));
@@ -149,6 +197,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -163,6 +212,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -177,6 +227,7 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,14 +242,170 @@ public class ManagementController implements Initializable {
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             // Show an error message to the user
         }
     }
-    public void subjectAddButton(ActionEvent event) throws IOException{
+
+    //Subject Page Buttons
+    public void subjectAddButton(ActionEvent event) throws IOException {
         subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+    }
+
+    public void subjectRemoveButton(ActionEvent event) throws IOException {
+        if (subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+        } else {
+            System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
+            currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
+            subjectTableViewList.setAll(currentSubjectList);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
+
+    public void searchSubjectList(ActionEvent event) throws IOException {
+        subjectSearchTableViewList.clear();
+        for (Subject subject : currentSubjectList) {
+            if (subject.getSubjectName().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())
+                    || subject.getSubjectCode().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())) {
+                subjectSearchTableViewList.add(subject);
+            }
+        }
+        if (subjectSearchBar.getText().equals("")) {
+            subjectTable.setItems(subjectTableViewList);
+        } else {
+            subjectTable.setItems(subjectSearchTableViewList);
+        }
+    }
+
+    static boolean subjectAddButtonState = false;
+    static boolean subjectDeleteButtonState = false;
+    static boolean subjectEditButtonState = false;
+
+    public void showAddButton(ActionEvent event) throws IOException {
+        if (!subjectAddButtonState) {
+            subjectAddButtonState = true;
+            subjectDeleteButtonState = false;
+            subjectEditButtonState = false;
+            subjectAddButtonMenu.setVisible(true);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(false);
+        } else {
+            subjectAddButtonState = false;
+            subjectAddButtonMenu.setVisible(false);
+        }
+    }
+
+    public void showDeleteButton(ActionEvent event) throws IOException {
+        if (!subjectDeleteButtonState) {
+            subjectAddButtonState = false;
+            subjectDeleteButtonState = true;
+            subjectEditButtonState = false;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(true);
+            subjectEditButtonMenu.setVisible(false);
+        } else {
+            subjectDeleteButtonState = false;
+            subjectDeleteButtonMenu.setVisible(false);
+        }
+    }
+
+    public void showEditButton(ActionEvent event) throws IOException {
+        if (!subjectEditButtonState) {
+            subjectAddButtonState = false;
+            subjectDeleteButtonState = false;
+            subjectEditButtonState = true;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(true);
+        } else {
+            subjectEditButtonState = false;
+            subjectEditButtonMenu.setVisible(false);
+        }
+    }
+    //End of Subject Page Buttons
+
+
+    //Start of Course Page Buttons
+    public void courseAddButton(ActionEvent event) throws IOException {
+        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
+        new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+    }
+    //Method to remove a course
+    public void courseRemoveButton(ActionEvent event) throws IOException {
+        if (courseTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+        } else {
+            System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
+            currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
+            subjectTableViewList.setAll(currentSubjectList);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
+    //Method to search course
+    public void searchCourseList(ActionEvent event) throws IOException {
+        courseSearchTableViewList.clear();
+        for (Course course : currentCourseList) {
+            if (course.getCourseName().toUpperCase().contains(courseSearchBar.getText().toUpperCase())
+                    || course.getCourseCode().toUpperCase().contains(courseSearchBar.getText().toUpperCase())) {
+                courseSearchTableViewList.add(course);
+            }
+        }
+        //course search bar
+        if (courseSearchBar.getText().equals("")) {
+            subjectTable.setItems(subjectTableViewList);
+        } else {
+            courseTable.setItems(courseSearchTableViewList);
+        }
+    }
+
+    static boolean courseAddButtonState = false;
+    static boolean courseDeleteButtonState = false;
+    static boolean courseEditButtonState = false;
+
+    public void CourseshowAddButton(ActionEvent event) throws IOException {
+        if (!courseAddButtonState) {
+            courseAddButtonState = true;
+            courseDeleteButtonState = false;
+            courseEditButtonState = false;
+            courseAddButtonMenu.setVisible(true);
+            courseDeleteButtonMenu.setVisible(false);
+            courseEditButtonMenu.setVisible(false);
+        } else {
+            courseAddButtonState = false;
+            courseAddButtonMenu.setVisible(false);
+        }
+    }
+
+    public void CourseshowDeleteButton(ActionEvent event) throws IOException {
+        if (!courseDeleteButtonState) {
+            courseAddButtonState = false;
+            courseDeleteButtonState = true;
+            courseEditButtonState = false;
+            courseAddButtonMenu.setVisible(false);
+            courseDeleteButtonMenu.setVisible(true);
+            courseEditButtonMenu.setVisible(false);
+        } else {
+            courseDeleteButtonState = false;
+            courseDeleteButtonMenu.setVisible(false);
+        }
+    }
+
+    public void CourseEditButton(ActionEvent event) throws IOException {
+        if (!subjectEditButtonState) {
+            subjectAddButtonState = false;
+            subjectDeleteButtonState = false;
+            subjectEditButtonState = true;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(true);
+        } else {
+            subjectEditButtonState = false;
+            subjectEditButtonMenu.setVisible(false);
+        }
     }
 }
