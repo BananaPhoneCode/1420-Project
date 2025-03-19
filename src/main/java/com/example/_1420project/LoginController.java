@@ -11,34 +11,78 @@ import javafx.event.ActionEvent;
 import java.io.IOException;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import org.controlsfx.control.action.Action;
-
-import java.util.Arrays;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginController {
     @FXML
-    TextField Username;
+    private TextField Username;
     @FXML
-    TextField Password;
+    private TextField Password;
+
     private String currentRole;
+    private static final String EXCEL_FILE_PATH = "src/UMS_Data.xlsx";
 
-    // hardcoded admin login
-    private static final String ADMIN_USERNAME = "JohnAbrams";
-    private static final String ADMIN_PASSWORD = "admin123";
+    private final List<User> students = new ArrayList<>();
+    private final List<User> faculties = new ArrayList<>();
 
-    // login data from excel
-    private static final String[] studentIDs = {
-            "S20250001", "S20250002", "S20250003", "S20250004", "S20250005",
-            "S20250006", "S20250007", "S20250008", "S20250009", "S20250010"
-    };
+    public LoginController() {
+        loadUserCredentials();
+    }
 
-    private static final String[] facultyIDs = {
-            "F10001", "F10002", "F10003", "F10004", "F10005" // Example faculty IDs
-    };
+    // Load credentials from the Excel file
+    private void loadUserCredentials() {
+        File file = new File(EXCEL_FILE_PATH);
+        if (!file.exists()) {
+            System.out.println("Excel file not found: " + EXCEL_FILE_PATH);
+            return;
+        }
 
-    private static final String DEFAULT_PASSWORD = "default123";
+        try (FileInputStream fileInputStream = new FileInputStream(file);
+             Workbook workbook = new XSSFWorkbook(fileInputStream)) {
 
-    // check if fields are blank
+            DataFormatter formatter = new DataFormatter();
+
+            // Load students
+            Sheet studentSheet = workbook.getSheet("Students");
+            if (studentSheet != null) {
+                for (Row row : studentSheet) {
+                    if (row.getRowNum() == 0) continue; // Skip header row
+
+                    String username = formatter.formatCellValue(row.getCell(0)).trim();  // Column A (Student ID)
+                    String password = formatter.formatCellValue(row.getCell(11)).trim(); // Column L (Password)
+
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        students.add(new User(username, "default123", "student")); // Default password
+                    }
+                }
+            }
+
+            // Load faculties
+            Sheet facultySheet = workbook.getSheet("Faculties");
+            if (facultySheet != null) {
+                for (Row row : facultySheet) {
+                    if (row.getRowNum() == 0) continue; // Skip header row
+
+                    String username = formatter.formatCellValue(row.getCell(0)).trim(); // Column A (Faculty ID)
+                    String password = formatter.formatCellValue(row.getCell(7)).trim(); // Column H (Password)
+
+                    if (!username.isEmpty() && !password.isEmpty()) {
+                        faculties.add(new User(username, "default123", "faculty")); // Default password
+                    }
+                }
+            }
+
+        } catch (IOException e) {
+            System.err.println("Error loading user credentials: " + e.getMessage());
+        }
+    }
+
+    // Validate fields
     private boolean areFieldsValid(String username, String password) {
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             showInvalidLoginAlert("Username or password cannot be empty.");
@@ -47,26 +91,48 @@ public class LoginController {
         return true;
     }
 
+    // Authenticate user based on loaded credentials
     private boolean authenticateUser(String username, String password) {
-        //authentication
-        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
-            assignRole("admin");
-            return true;
+        System.out.println("Checking username: " + username);  // Debugging log to show entered username
+
+        // Trim spaces from the entered username
+        String enteredUsername = username.trim();
+
+        for (User user : students) {
+            // Trim spaces from the loaded username
+            String loadedUsername = user.getUsername().trim();
+            System.out.println("Checking student username: " + loadedUsername);  // Debugging log to show loaded username
+            if (loadedUsername.equals(enteredUsername)) {  // Case-sensitive comparison
+                if (user.getPassword().equals(password)) {
+                    assignRole("student");
+                    return true;
+                } else {
+                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    return false;
+                }
+            }
         }
 
-        if (Arrays.asList(studentIDs).contains(username) && password.equals(DEFAULT_PASSWORD)) {
-            assignRole("student");
-            return true;
+        for (User user : faculties) {
+            // Trim spaces from the loaded username
+            String loadedUsername = user.getUsername().trim();
+            System.out.println("Checking faculty username: " + loadedUsername);  // Debugging log to show loaded username
+            if (loadedUsername.equals(enteredUsername)) {  // Case-sensitive comparison
+                if (user.getPassword().equals(password)) {
+                    assignRole("faculty");
+                    return true;
+                } else {
+                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    return false;
+                }
+            }
         }
 
-        if (Arrays.asList(facultyIDs).contains(username) && password.equals(DEFAULT_PASSWORD)) {
-            assignRole("faculty");
-            return true;
-        }
-
-        showInvalidLoginAlert("Invalid username or password. Please try again.");
+        showInvalidLoginAlert("Username not found. Please try again.");
         return false;
     }
+
+
 
     private void assignRole(String role) {
         this.currentRole = role;
@@ -77,47 +143,23 @@ public class LoginController {
         String password = Password.getText();
 
         if (!areFieldsValid(username, password)) {
-            return; //checks for blanks
+            return;
         }
 
-        //authenticate the user
         if (authenticateUser(username, password)) {
             switch (this.currentRole) {
-                case "admin":
-                    navigateToManagement(event);
-                    break;
                 case "student":
-                    navigateToUserDashboard(event);
+                    navigateToDashboard(event, "Dashboard.fxml");
                     break;
                 case "faculty":
-                    navigateToFacultyDashboard(event);
+                    navigateToDashboard(event, "FacultyDashboard.fxml");
                     break;
             }
         }
     }
 
-    private void navigateToManagement(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Management.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void navigateToUserDashboard(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Dashboard.fxml"));
-        Parent root = loader.load();
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
-
-    private void navigateToFacultyDashboard(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("FacultyDashboard.fxml"));
+    private void navigateToDashboard(ActionEvent event, String fxmlFile) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
@@ -133,7 +175,8 @@ public class LoginController {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    public void bypass(ActionEvent event) throws IOException{
-        navigateToManagement(event);
+
+    public void bypass(ActionEvent event) throws IOException {
+        navigateToDashboard(event, "Dashboard.fxml");
     }
 }
