@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -20,26 +19,20 @@ public class EventManagement extends Application {
     @FXML
     private TableView<Event> eventTable;
     private ObservableList<Event> eventList = FXCollections.observableArrayList();
-
     private static final String FILE_PATH = "UMS_Data.xlsx";
 
     @Override
     public void start(Stage primaryStage) {
         eventTable = new TableView<>();
         loadEventData();
-
         TableColumn<Event, String> nameCol = new TableColumn<>("Event Name");
         nameCol.setCellValueFactory(data -> data.getValue().eventNameProperty());
-
         TableColumn<Event, String> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(data -> data.getValue().eventDateProperty());
-
         TableColumn<Event, String> locationCol = new TableColumn<>("Location");
         locationCol.setCellValueFactory(data -> data.getValue().locationProperty());
-
         eventTable.getColumns().addAll(nameCol, dateCol, locationCol);
         eventTable.setItems(eventList);
-
         VBox root = new VBox(10, new Label("Event Management"), eventTable);
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setScene(scene);
