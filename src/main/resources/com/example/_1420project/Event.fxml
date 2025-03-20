@@ -3,10 +3,12 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="664.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
    <children>
+      <!-- Top Navigation Bar -->
       <AnchorPane layoutX="290.0" prefHeight="52.0" prefWidth="780.0" style="-fx-background-color: #FFA500;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
          <children>
             <ImageView fx:id="menu" fitHeight="46.0" fitWidth="52.0" layoutX="26.0" layoutY="2.0" pickOnBounds="true" preserveRatio="true">
@@ -16,80 +18,45 @@
             </ImageView>
          </children>
       </AnchorPane>
+
+      <!-- Content Area -->
       <AnchorPane layoutX="390.0" layoutY="132.0" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: Gray;">
          <children>
             <Text layoutX="45.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This is the Events Page" />
          </children>
       </AnchorPane>
+
+      <!-- Left Sidebar -->
       <AnchorPane layoutY="56.0" prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.leftAnchor="0.0">
          <children>
             <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
                <children>
                   <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../../../Pictures/House.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Pictures/Openedbook-Clipart.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="52.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Pictures/CourseIcon.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Pictures/Person-Clipart.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Pictures/Faculty-Clipart.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../../../Pictures/Calendar-Clipart.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </VBox>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="pane1" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      <AnchorPane prefHeight="611.0" prefWidth="100.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
-         <children>
-            <VBox alignment="TOP_CENTER" layoutY="25.0" prefHeight="591.0" prefWidth="100.0" spacing="10.0" AnchorPane.topAnchor="20.0">
-               <children>
-                  <ImageView fx:id="DashManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
                         <Image url="@../../../images/House.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="SubManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/Openedbook-Clipart.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="CouManagement" fitHeight="52.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="52.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/CourseIcon.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="StuManagement" fitHeight="60.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/Person-Clipart.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="FacManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/Faculty-Clipart.png" />
                      </image>
                   </ImageView>
-                  <ImageView fx:id="EveManagement" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../../images/Calendar-Clipart.png" />
                      </image>
@@ -98,9 +65,12 @@
             </VBox>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="pane2" prefHeight="611.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
+
+      <!-- Sidebar Menu -->
+      <AnchorPane fx:id="pane1" prefHeight="611.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="100.0">
          <children>
             <VBox layoutY="28.0" prefHeight="583.0" prefWidth="178.0" spacing="28.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+               <!-- Button Navigation -->
                <children>
                   <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#dashboard" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Dashboard">
                      <font>
@@ -132,6 +102,7 @@
                         <Font size="16.0" />
                      </font>
                   </Button>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
                </children>
             </VBox>
          </children>
