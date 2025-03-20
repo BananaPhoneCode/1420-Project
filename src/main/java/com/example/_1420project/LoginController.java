@@ -27,62 +27,69 @@ public class LoginController {
     private String currentRole;
     private static final String EXCEL_FILE_PATH = "src/UMS_Data.xlsx";
 
-    private final List<User> students = new ArrayList<>();
-    private final List<User> faculties = new ArrayList<>();
+    private final ArrayList<User> students = new ArrayList<>();
+    private final ArrayList<User> faculties = new ArrayList<>();
 
     public LoginController() {
+        System.out.println("LoginController called");
         loadUserCredentials();
     }
 
-    // Load credentials from the Excel file
     private void loadUserCredentials() {
+        //checking if file is locatable
         File file = new File(EXCEL_FILE_PATH);
         if (!file.exists()) {
             System.out.println("Excel file not found: " + EXCEL_FILE_PATH);
             return;
         }
-
+        System.out.println("Excel file found: " + EXCEL_FILE_PATH);
+        //opening and reading info from the excel sheet
         try (FileInputStream fileInputStream = new FileInputStream(file);
              Workbook workbook = new XSSFWorkbook(fileInputStream)) {
 
-            DataFormatter formatter = new DataFormatter();
+            System.out.println("Workbook opened successfully.");
 
-            // Load students
-            Sheet studentSheet = workbook.getSheet("Students");
-            if (studentSheet != null) {
-                for (Row row : studentSheet) {
-                    if (row.getRowNum() == 0) continue; // Skip header row
+            //opening students sheet and looping through each row, adding all student usernames and passwords to the student arraylist via user objects
+            Sheet studentsSheet = workbook.getSheet("Students");
+            if (studentsSheet != null) {
+                for (Row row : studentsSheet) {
+                    if(row.getRowNum()==0){continue;}
+                    Cell usernameCell = row.getCell(0);  // Username is in column A (index 0)
+                    Cell passwordCell = row.getCell(11);  // Password is in column L (index 11)
 
-                    String username = formatter.formatCellValue(row.getCell(0)).trim();  // Column A (Student ID)
-                    String password = formatter.formatCellValue(row.getCell(11)).trim(); // Column L (Password)
-
-                    if (!username.isEmpty() && !password.isEmpty()) {
-                        students.add(new User(username, "default123", "student")); // Default password
+                    if (usernameCell != null && passwordCell != null) {
+                        String username = usernameCell.getStringCellValue();
+                        String password = passwordCell.getStringCellValue();
+                        students.add(new User(username, password, "student"));
                     }
                 }
+                //checking if this ran successfully
+                System.out.println("Loaded students from Excel sheet.");
             }
 
-            // Load faculties
-            Sheet facultySheet = workbook.getSheet("Faculties");
-            if (facultySheet != null) {
-                for (Row row : facultySheet) {
-                    if (row.getRowNum() == 0) continue; // Skip header row
+            //opening faculties sheet and looping through each row, adding all faculty usernames and passwords to the faculties arraylist via user objects
+            Sheet facultiesSheet = workbook.getSheet("Faculties");
+            if (facultiesSheet != null) {
+                for (Row row : facultiesSheet) {
+                    if(row.getRowNum()==0){continue;}
+                    Cell usernameCell = row.getCell(0);  // Username is in column A (index 0)
+                    Cell passwordCell = row.getCell(7);  // Password is in column H (index 7)
 
-                    String username = formatter.formatCellValue(row.getCell(0)).trim(); // Column A (Faculty ID)
-                    String password = formatter.formatCellValue(row.getCell(7)).trim(); // Column H (Password)
-
-                    if (!username.isEmpty() && !password.isEmpty()) {
-                        faculties.add(new User(username, "default123", "faculty")); // Default password
+                    if (usernameCell != null && passwordCell != null) {
+                        String username = usernameCell.getStringCellValue();
+                        String password = passwordCell.getStringCellValue();
+                        faculties.add(new User(username, password, "faculty"));
                     }
                 }
+                System.out.println("Loaded faculties from Excel sheet.");
             }
 
         } catch (IOException e) {
-            System.err.println("Error loading user credentials: " + e.getMessage());
+            System.err.println("Error opening workbook: " + e.getMessage());
         }
     }
 
-    // Validate fields
+    // check if any fields are blank, shows an error popup if yes
     private boolean areFieldsValid(String username, String password) {
         if (username.trim().isEmpty() || password.trim().isEmpty()) {
             showInvalidLoginAlert("Username or password cannot be empty.");
@@ -91,18 +98,21 @@ public class LoginController {
         return true;
     }
 
-    // Authenticate user based on loaded credentials
+    // authenticate user based on loaded credentials
     private boolean authenticateUser(String username, String password) {
-        System.out.println("Checking username: " + username);  // Debugging log to show entered username
+        System.out.println("Checking username: " + username);  // debugging
 
-        // Trim spaces from the entered username
-        String enteredUsername = username.trim();
+        String enteredUsername = username;
+        //checking the contents of the arraylists (ERROR FOUND!!! THE LISTS ARE EMPTY)
+        System.out.println(students);
+        System.out.println(faculties);
 
+        // is enteredusername found in the students array? does the password match? if yes to both assign role of student
         for (User user : students) {
-            // Trim spaces from the loaded username
-            String loadedUsername = user.getUsername().trim();
+            String loadedUsername = user.getUsername();
+            System.out.println(loadedUsername);
             System.out.println("Checking student username: " + loadedUsername);  // Debugging log to show loaded username
-            if (loadedUsername.equals(enteredUsername)) {  // Case-sensitive comparison
+            if (loadedUsername.equals(enteredUsername)) {
                 if (user.getPassword().equals(password)) {
                     assignRole("student");
                     return true;
@@ -113,11 +123,11 @@ public class LoginController {
             }
         }
 
+        // check in the faculties list
         for (User user : faculties) {
-            // Trim spaces from the loaded username
-            String loadedUsername = user.getUsername().trim();
-            System.out.println("Checking faculty username: " + loadedUsername);  // Debugging log to show loaded username
-            if (loadedUsername.equals(enteredUsername)) {  // Case-sensitive comparison
+            String loadedUsername = user.getUsername();
+            System.out.println("Checking faculty username: " + loadedUsername);
+            if (loadedUsername.equals(enteredUsername)) {
                 if (user.getPassword().equals(password)) {
                     assignRole("faculty");
                     return true;
@@ -125,14 +135,14 @@ public class LoginController {
                     showInvalidLoginAlert("Invalid password. Please try again.");
                     return false;
                 }
+            }else{
+                System.out.println("no match");
             }
         }
 
         showInvalidLoginAlert("Username not found. Please try again.");
         return false;
     }
-
-
 
     private void assignRole(String role) {
         this.currentRole = role;
