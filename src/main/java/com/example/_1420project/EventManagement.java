@@ -19,7 +19,7 @@ import java.util.Iterator;
 public class EventManagement extends Application {
     private static final Logger logger = LogManager.getLogger(EventManagement.class);
     private final ObservableList<Event> eventList = FXCollections.observableArrayList();
-    private static final String FILE_PATH = "UMS_Data.xlsx";
+    private static final String FILE_PATH = new File("UMS_Data.xlsx").getAbsolutePath();
 
     @Override
     public void start(Stage primaryStage) {
@@ -49,23 +49,52 @@ public class EventManagement extends Application {
         try (FileInputStream fis = new FileInputStream(new File(FILE_PATH));
              Workbook workbook = new XSSFWorkbook(fis)) {
 
-            Sheet sheet = workbook.getSheet("Events");
+            // Find the sheet dynamically (ignoring extra spaces)
+            Sheet sheet = null;
+            for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                if (workbook.getSheetName(i).trim().equalsIgnoreCase("Events")) {
+                    sheet = workbook.getSheetAt(i);
+                    break;
+                }
+            }
+
+            if (sheet == null) {
+                System.out.println("Sheet 'Events' not found! Available sheets:");
+                for (int i = 0; i < workbook.getNumberOfSheets(); i++) {
+                    System.out.println("'" + workbook.getSheetName(i) + "'");
+                }
+                return;
+            }
+
             Iterator<Row> rowIterator = sheet.iterator();
-            rowIterator.next(); // Skip header row
+            if (rowIterator.hasNext()) rowIterator.next(); // Skip header row
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
-                String eventName = row.getCell(0).getStringCellValue();
-                String eventDate = row.getCell(1).getStringCellValue();
-                String location = row.getCell(2).getStringCellValue();
-                eventList.add(new Event(eventName, eventDate, location));
+
+                // **Check for null before reading cell values**
+                String eventName = getCellValue(row, 0);
+                String eventDate = getCellValue(row, 1);
+                String location = getCellValue(row, 2);
+
+                if (eventName != null && eventDate != null && location != null) {
+                    eventList.add(new Event(eventName, eventDate, location));
+                } else {
+                    System.out.println("⚠️ Skipping row " + row.getRowNum() + " due to missing values!");
+                }
             }
-            logger.info("Event data loaded successfully from {}", FILE_PATH);
 
         } catch (IOException e) {
-            logger.error("Error reading Excel file: {}", FILE_PATH, e);
+            System.out.println("Error reading Excel file: " + e.getMessage());
         }
     }
+
+    private String getCellValue(Row row, int cellIndex) {
+        org.apache.poi.ss.usermodel.Cell cell = row.getCell(cellIndex); // 👈 Fully qualified name
+        return (cell != null) ? cell.getStringCellValue().trim() : null;
+    }
+
+
 
     public static void main(String[] args) {
         launch(args);
