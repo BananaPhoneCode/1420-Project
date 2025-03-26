@@ -43,6 +43,7 @@ public class ManagementController implements Initializable {
     ImageView FacManagement;
     @FXML
     ImageView EveManagement;
+
     //Subject Class @FXML:
     @FXML
     private TableView<Subject> subjectTable = new TableView<>();
@@ -71,6 +72,12 @@ public class ManagementController implements Initializable {
     private TableColumn<Course, String> CourseName = new TableColumn<>();
     @FXML
     private TableColumn<Course, String> CourseCode = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseLecture = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSection = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSubjectName = new TableColumn<>();
 
     @FXML
     AnchorPane courseAddButtonMenu, courseDeleteButtonMenu, courseEditButtonMenu;
@@ -80,12 +87,16 @@ public class ManagementController implements Initializable {
     @FXML
     TextField courseNameTxt = new TextField();
     @FXML
+    TextField courseLectureTxt = new TextField();
+    @FXML
+    TextField courseSectionTxt = new TextField();
+    @FXML
     TextField courseDeleteTxt = new TextField();
     @FXML
     TextField courseSearchBar = new TextField();
 
     @FXML
-    private AnchorPane pane3, pane4;
+    //private AnchorPane pane3, pane4;
     ObservableList<Course> courseTableViewList = FXCollections.observableArrayList();
     ObservableList<Course> courseSearchTableViewList = FXCollections.observableArrayList();
     ArrayList<Course> currentCourseList = new EditCourseList().Generate();
@@ -93,9 +104,10 @@ public class ManagementController implements Initializable {
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
 
+    //old way
     @FXML
     private ListView<String> EnrollmentListView = new ListView<>(); //allows user to scroll through enrollment
-    private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
+    //private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
 
     @FXML
     private AnchorPane pane1, pane2;
@@ -120,6 +132,8 @@ public class ManagementController implements Initializable {
         courseTableViewList.addAll(currentCourseList);
         CourseCode.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseCode"));
         CourseName.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseName"));
+        CourseSection.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseSection"));
+        CourseLecture.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseLecture"));
         courseTable.setItems(courseTableViewList);
 
         pane1.setVisible(false);
@@ -331,11 +345,13 @@ public class ManagementController implements Initializable {
 
 
     //Start of Course Page Buttons
+    //Course Add Method
     public void courseAddButton(ActionEvent event) throws IOException {
-        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
-        new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        courseTable.getItems().add(new Course(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText()));
+        new EditSubjectList().Add(courseCodeTxt.getText(), courseNameTxt.getText());
     }
-    //Method to remove a course
+
+    //Course Remove Method
     public void courseRemoveButton(ActionEvent event) throws IOException {
         if (courseTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
         } else {
@@ -381,6 +397,7 @@ public class ManagementController implements Initializable {
         }
     }
 
+
     public void CourseshowDeleteButton(ActionEvent event) throws IOException {
         if (!courseDeleteButtonState) {
             courseAddButtonState = false;
@@ -396,16 +413,16 @@ public class ManagementController implements Initializable {
     }
 
     public void CourseEditButton(ActionEvent event) throws IOException {
-        if (!subjectEditButtonState) {
-            subjectAddButtonState = false;
-            subjectDeleteButtonState = false;
-            subjectEditButtonState = true;
-            subjectAddButtonMenu.setVisible(false);
-            subjectDeleteButtonMenu.setVisible(false);
-            subjectEditButtonMenu.setVisible(true);
+        if (!courseEditButtonState) {
+            courseAddButtonState = false;
+            courseDeleteButtonState = false;
+            courseEditButtonState = true;
+            courseAddButtonMenu.setVisible(false);
+            courseDeleteButtonMenu.setVisible(false);
+            courseEditButtonMenu.setVisible(true);
         } else {
-            subjectEditButtonState = false;
-            subjectEditButtonMenu.setVisible(false);
+            courseEditButtonState = false;
+            courseEditButtonMenu.setVisible(false);
         }
     }
 }
