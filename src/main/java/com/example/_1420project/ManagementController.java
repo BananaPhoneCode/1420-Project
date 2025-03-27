@@ -23,9 +23,7 @@ import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ManagementController implements Initializable {
     private static final Duration ANIMATION_DURATION = Duration.seconds(0.5);
@@ -56,7 +54,9 @@ public class ManagementController implements Initializable {
     @FXML
     TextField subjectNameTxt = new TextField();
     @FXML
-    TextField subjectDeleteTxt = new TextField();
+    TextField subjectCodeEditTxt = new TextField();
+    @FXML
+    TextField subjectNameEditTxt = new TextField();
     @FXML
     TextField subjectSearchBar = new TextField();
     @FXML
@@ -110,6 +110,12 @@ public class ManagementController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Initialize Subject List and Subject Admin Menu Buttons
+        currentSubjectList.sort(new Comparator<Subject>() {
+            @Override
+            public int compare(Subject o1, Subject o2) {
+                return o1.getSubjectName().compareToIgnoreCase(o2.getSubjectName());
+            }
+        });
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
@@ -257,16 +263,25 @@ public class ManagementController implements Initializable {
     }
 
     public void subjectRemoveButton(ActionEvent event) throws IOException {
-        if (subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
-        } else {
+        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
             System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
             currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
             subjectTableViewList.setAll(currentSubjectList);
             subjectTable.setItems(subjectTableViewList);
+
         }
     }
-
+    public void subjectEditButton(ActionEvent event) throws IOException {
+        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+            System.err.println("EDIT " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Edit(subjectTable.getSelectionModel().getSelectedItem(), subjectCodeEditTxt.getText(), subjectNameEditTxt.getText());
+            Subject tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectNameEditTxt.getText());
+            currentSubjectList.add(tempSubject);
+            subjectTableViewList.set(subjectTable.getSelectionModel().getSelectedIndex(), tempSubject);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
     public void searchSubjectList(ActionEvent event) throws IOException {
         subjectSearchTableViewList.clear();
         for (Subject subject : currentSubjectList) {
