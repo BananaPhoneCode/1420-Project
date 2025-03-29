@@ -348,7 +348,7 @@ public class ManagementController implements Initializable {
     //Course Add Method
     public void courseAddButton(ActionEvent event) throws IOException {
         courseTable.getItems().add(new Course(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText()));
-        new EditSubjectList().Add(courseCodeTxt.getText(), courseNameTxt.getText());
+        new EditCourseList().Add(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText());
     }
 
     //Course Remove Method
@@ -362,7 +362,7 @@ public class ManagementController implements Initializable {
             subjectTable.setItems(subjectTableViewList);
         }
     }
-    //Method to search course
+    //Search Course
     public void searchCourseList(ActionEvent event) throws IOException {
         courseSearchTableViewList.clear();
         for (Course course : currentCourseList) {
