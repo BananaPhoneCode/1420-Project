@@ -56,10 +56,8 @@ public class EditSubjectList{
             String tempCode = formatter.formatCellValue(row.getCell(0));
             String tempName = formatter.formatCellValue(row.getCell(1));
             if(Objects.equals(SubIN.getSubjectCode(), tempCode) || Objects.equals(SubIN.getSubjectName(), tempName)){
-                System.err.println("Deez");
-                row.removeCell(row.getCell(0));
-                row.removeCell(row.getCell(1));
-
+                row.removeCell(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
             }
         }
         try(OutputStream fileOut = new FileOutputStream(path)) {
@@ -73,9 +71,8 @@ public class EditSubjectList{
             String tempCode = formatter.formatCellValue(row.getCell(0));
             String tempName = formatter.formatCellValue(row.getCell(1));
             if(Objects.equals(SubIN.getSubjectCode(), tempCode) || Objects.equals(SubIN.getSubjectName(), tempName)){
-                System.err.println("Deez");
-                row.getCell(0).setCellValue(SubCodeIN);
-                row.getCell(1).setCellValue(SubNameIN);
+                if(!SubCodeIN.isEmpty())row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(SubCodeIN);
+                if(!SubNameIN.isEmpty())row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(SubNameIN);
             }
         }
         try(OutputStream fileOut = new FileOutputStream(path)) {

@@ -258,8 +258,10 @@ public class ManagementController implements Initializable {
 
     //Subject Page Buttons
     public void subjectAddButton(ActionEvent event) throws IOException {
-        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
+        Subject tempSubject = new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        subjectTable.getItems().add(tempSubject);
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        currentSubjectList.add(tempSubject);
     }
 
     public void subjectRemoveButton(ActionEvent event) throws IOException {
@@ -273,15 +275,30 @@ public class ManagementController implements Initializable {
         }
     }
     public void subjectEditButton(ActionEvent event) throws IOException {
-        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+        if (!subjectTable.getSelectionModel().getSelectedItems().isEmpty()) {
             System.err.println("EDIT " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Edit(subjectTable.getSelectionModel().getSelectedItem(), subjectCodeEditTxt.getText(), subjectNameEditTxt.getText());
-            Subject tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectNameEditTxt.getText());
+            for (Subject subject : currentSubjectList) {
+                if(Objects.equals(subject.getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectCode())
+                 ||Objects.equals(subject.getSubjectName(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName())
+                ) {currentSubjectList.remove(subject); break;}
+            }
+            currentSubjectList.remove(new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName()));
+            Subject tempSubject = getSubject();
             currentSubjectList.add(tempSubject);
             subjectTableViewList.set(subjectTable.getSelectionModel().getSelectedIndex(), tempSubject);
             subjectTable.setItems(subjectTableViewList);
         }
     }
+
+    private Subject getSubject() {
+        Subject tempSubject;
+        if(Objects.equals(subjectCodeEditTxt.getText(), "")){tempSubject = new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectNameEditTxt.getText());}
+        else if(Objects.equals(subjectNameEditTxt.getText(), "")){tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectTable.getSelectionModel().getSelectedItem().getSubjectName());}
+        else{tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectNameEditTxt.getText());}
+        return tempSubject;
+    }
+
     public void searchSubjectList(ActionEvent event) throws IOException {
         subjectSearchTableViewList.clear();
         for (Subject subject : currentSubjectList) {
