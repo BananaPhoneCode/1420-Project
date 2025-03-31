@@ -5,6 +5,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class EditSubjectList{
@@ -24,8 +26,10 @@ public class EditSubjectList{
             String tempName = formatter.formatCellValue(row.getCell(0));
             String tempCode = formatter.formatCellValue(row.getCell(1));
             Subject selecSubject = new Subject(tempName,tempCode);
-            subjectList.add(selecSubject);
+            if(!Objects.equals(tempName, ""))
+            {subjectList.add(selecSubject);}
         }
+
         return subjectList;
     }
     public void Add(String SubNameIN, String SubCodeIN) throws FileNotFoundException {
@@ -49,9 +53,26 @@ public class EditSubjectList{
     }
     public void Remove(Subject SubIN) throws FileNotFoundException{
         for(Row row : sheet){
-            if(Objects.equals(SubIN.getSubjectCode(), row.getCell(0).getStringCellValue())|| Objects.equals(SubIN.getSubjectName(), row.getCell(1).getStringCellValue())){
-                row.getCell(0).setBlank();
-                row.getCell(1).setBlank();
+            String tempCode = formatter.formatCellValue(row.getCell(0));
+            String tempName = formatter.formatCellValue(row.getCell(1));
+            if(Objects.equals(SubIN.getSubjectCode(), tempCode) || Objects.equals(SubIN.getSubjectName(), tempName)){
+                row.removeCell(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            }
+        }
+        try(OutputStream fileOut = new FileOutputStream(path)) {
+            xssfWorkbook.write(fileOut);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void Edit(Subject SubIN, String SubCodeIN, String SubNameIN) throws FileNotFoundException{
+        for(Row row : sheet){
+            String tempCode = formatter.formatCellValue(row.getCell(0));
+            String tempName = formatter.formatCellValue(row.getCell(1));
+            if(Objects.equals(SubIN.getSubjectCode(), tempCode) || Objects.equals(SubIN.getSubjectName(), tempName)){
+                if(!SubCodeIN.isEmpty())row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(SubCodeIN);
+                if(!SubNameIN.isEmpty())row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(SubNameIN);
             }
         }
         try(OutputStream fileOut = new FileOutputStream(path)) {
