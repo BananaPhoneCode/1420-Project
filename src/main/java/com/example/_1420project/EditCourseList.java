@@ -26,13 +26,14 @@ public class EditCourseList{
             }
             String tempName = formatter.formatCellValue(row.getCell(0));
             String tempCode = formatter.formatCellValue(row.getCell(1));
-            String tempSection = formatter.formatCellValue(row.getCell(2));
-            String tempLecture = formatter.formatCellValue(row.getCell(3));
+            String tempSection = formatter.formatCellValue(row.getCell(3));
+            String tempLecture = formatter.formatCellValue(row.getCell(5));
             Course selectedCourse = new Course(tempName,tempCode, tempSection, tempLecture);
             courseList.add(selectedCourse);
         }
         return courseList;
     }
+        //Method: It finds the first empty row by checking if column 0 (Course Code) is blank.
     public void Add(String CourseNameIN, String CourseCodeIN, String CourseSectionIN, String CourseLectureIN) throws FileNotFoundException {
         int nextEmpty=0;
         for(Row row : sheet){
@@ -46,10 +47,10 @@ public class EditCourseList{
         cellName.setCellValue(CourseNameIN);
         Cell cellCode = row.createCell(1);
         cellCode.setCellValue(CourseCodeIN);
-        Cell cellSection = row.createCell(2);
-        cellCode.setCellValue(CourseSectionIN);
-        Cell cellLecture = row.createCell(3);
-        cellCode.setCellValue(CourseLectureIN);
+        Cell cellSection = row.createCell(3);
+        cellSection.setCellValue(CourseSectionIN);
+        Cell cellLecture = row.createCell(5);
+        cellLecture.setCellValue(CourseLectureIN);
         try(OutputStream fileOut = new FileOutputStream(path)) {
             xssfWorkbook.write(fileOut);
         } catch (IOException e) {
