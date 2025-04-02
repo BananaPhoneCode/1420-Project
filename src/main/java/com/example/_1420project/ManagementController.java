@@ -43,6 +43,8 @@ public class ManagementController implements Initializable {
     ImageView FacManagement;
     @FXML
     ImageView EveManagement;
+    @FXML
+    ImageView EditProfile;
     //Subject Class @FXML:
     @FXML
     private TableView<Subject> subjectTable = new TableView<>();
@@ -234,6 +236,36 @@ public class ManagementController implements Initializable {
             // Show an error message to the user
         }
     }
+    public void viewAssignedCourses(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewAssignedCourses.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show an error message to the user
+        }
+    }
+
+    public void facultyEditProfile(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditProfile.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show an error message to the user
+        }
+    }
+
 
     public void event(ActionEvent event) throws IOException {
         try {
