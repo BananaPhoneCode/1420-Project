@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ManagementController">
+   <children>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#faculty" text="Back" />
+      <TreeTableView layoutX="113.0" layoutY="90.0" prefHeight="270.0" prefWidth="446.0">
+        <columns>
+          <TreeTableColumn fx:id="courseNameFaculty" prefWidth="215.20001220703125" text="Course Name" />
+          <TreeTableColumn fx:id="courseCodeFaculty" prefWidth="230.4000244140625" text="Course code" />
+        </columns>
+      </TreeTableView>
+   </children>
+</AnchorPane>
