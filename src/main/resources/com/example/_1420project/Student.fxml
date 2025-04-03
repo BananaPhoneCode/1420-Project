@@ -131,10 +131,21 @@
             </VBox>
          </children>
       </AnchorPane>
-      <Button layoutX="309.0" layoutY="75.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Profile" />
-      <Button layoutX="550.0" layoutY="75.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="Edit Profile" />
-      <Button layoutX="309.0" layoutY="168.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Enrolled Classes" />
+      <Button fx:id="viewProfileButton" layoutX="309.0" layoutY="75.0" mnemonicParsing="false" onAction="#viewStudent" prefHeight="68.0" prefWidth="186.0" text="View Profile" />
+      <Button fx:id="editProfileButton" layoutX="550.0" layoutY="75.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="68.0" prefWidth="186.0" text="Edit Profile" />
+      <Button fx:id="viewEnrolledButton" layoutX="309.0" layoutY="168.0" mnemonicParsing="false" onAction="#viewEnrolledClasses" prefHeight="68.0" prefWidth="186.0" text="View Enrolled Classes" />
       <Button layoutX="550.0" layoutY="168.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Grades" />
-      <Button layoutX="309.0" layoutY="264.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Tuition Status" />
+      <Button fx:id="viewTuitionButton" layoutX="309.0" layoutY="264.0" mnemonicParsing="false" onAction="#viewTuitionStatus" prefHeight="68.0" prefWidth="186.0" text="View Tuition Status" />
+      <TableView layoutX="531.0" layoutY="424.0" prefHeight="246.0" prefWidth="249.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <TextField fx:id="nameField" promptText="Student Name " text="Student Name " />
+      <TextField fx:id="idField" promptText="Student Id " text="Student Id" />
+      <TextField fx:id="addressField" promptText="Address" text="Address" />
+      <TextField fx:id="telephoneField" promptText="Telephone" text="Telephone" />
+      <ComboBox fx:id="programComboBox" prefWidth="150.0" promptText="Program Type" />
    </children>
 </AnchorPane>
