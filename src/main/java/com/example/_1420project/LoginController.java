@@ -30,6 +30,10 @@ public class LoginController {
     private ArrayList<User> students = new ArrayList<>();
     private ArrayList<User> faculties = new ArrayList<>();
 
+    //hardcoded admin login b/c not found in excel sheet
+    private String adminUser = "admin1";
+    private String adminPass = "default123";
+
     public LoginController() {
         System.out.println("LoginController called");
         loadUserCredentials();
@@ -115,7 +119,7 @@ public class LoginController {
                     assignRole("student");
                     return true;
                 } else {
-                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    showInvalidLoginAlert("Invalid username or password. Please try again.");
                     return false;
                 }
             }
@@ -130,12 +134,17 @@ public class LoginController {
                     assignRole("faculty");
                     return true;
                 } else {
-                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    showInvalidLoginAlert("Invalid username or password. Please try again.");
                     return false;
                 }
             }
         }
 
+        if (username.equals(adminUser) && password.equals(adminPass)) {
+            assignRole("admin");
+            return true;
+        }
+        showInvalidLoginAlert("Invalid username or password. Please try again.");
         return false;
     }
 
@@ -154,18 +163,11 @@ public class LoginController {
         }
 
         if (authenticateUser(username, password)) {
-            switch (this.currentRole) {
-                case "student":
-                    navigateToDashboard(event, "Dashboard.fxml");
-                    break;
-                case "faculty":
-                    navigateToDashboard(event, "Faculty.fxml");
-                    break;
-            }
+            navigateToDashboard(event, "Dashboard.fxml");
         }
     }
 
-    //takes user to designated dashboard depending on their role
+    //takes user to dashboard
     private void navigateToDashboard(ActionEvent event, String fxmlFile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
