@@ -415,16 +415,22 @@ public class ManagementController implements Initializable {
     public void courseRemoveButton(ActionEvent event) throws IOException {
         if (courseTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
         } else {
-            System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
-            new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
-            currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
-            subjectTableViewList.setAll(currentSubjectList);
-            subjectTable.setItems(subjectTableViewList);
+            System.err.println("DELETE " + courseTable.getSelectionModel().getSelectedItem().getCourseName());
+            new EditCourseList().Remove(courseTable.getSelectionModel().getSelectedItem());
+            currentCourseList.remove(courseTable.getSelectionModel().getSelectedItem());
+            courseTableViewList.setAll(currentCourseList);
+            courseTable.setItems(courseTableViewList);
         }
     }
     //constructor for course
     private Course getCourse() {
         Course tempCourse;
+        Course tempName;
+        Course tempCode;
+        Course tempSection;
+        Course tempLocation;
+        Course tempTeacher;
+        Course tempCapacity;
         if(Objects.equals(courseCodeEditTxt.getText(), "")){tempCourse = new Course(courseTable.getSelectionModel().getSelectedItem().getCourseCode(), courseNameEditTxt.getText(), courseSectionEditTxt.getText(), courseLectureEditTxt.getText(), courseCapacityEditTxt.getText(), courseLocationEditTxt.getText(), courseTeacherEditTxt.getText());}
 
         else if(Objects.equals(courseNameEditTxt.getText(), "")){
@@ -457,7 +463,6 @@ public class ManagementController implements Initializable {
             courseTable.setItems(courseSearchTableViewList);
         }
     }
-
     static boolean courseAddButtonState = false;
     static boolean courseDeleteButtonState = false;
     static boolean courseEditButtonState = false;
@@ -489,7 +494,6 @@ public class ManagementController implements Initializable {
             courseDeleteButtonMenu.setVisible(false);
         }
     }
-
     public void CourseshowEditButton(ActionEvent event) throws IOException {
         if (!courseEditButtonState) {
             courseAddButtonState = false;
@@ -497,29 +501,46 @@ public class ManagementController implements Initializable {
     }
 
     //new edit button working
+    //new edit button working
+
+//just changed it
     public void courseEditButton(ActionEvent event) throws IOException {
         if (!courseTable.getSelectionModel().getSelectedItems().isEmpty()) {
             System.err.println("EDIT " + courseTable.getSelectionModel().getSelectedItem().getCourseName());
-            new EditCourseList().Edit(courseTable.getSelectionModel().getSelectedItem(), courseCodeEditTxt.getText(), courseNameEditTxt.getText());
-            for (Course course : currentCourseList) {
-                if(Objects.equals(course.getCourseCode(), courseTable.getSelectionModel().getSelectedItem().getCourseCode())
-                        ||Objects.equals(course.getCourseName(), courseTable.getSelectionModel().getSelectedItem().getCourseName())
-                ) {currentCourseList.remove(course); break;}
+
+            // Use a single instance of EditCourseList
+            EditCourseList editCourseList = new EditCourseList();
+            editCourseList.Edit(
+                    courseTable.getSelectionModel().getSelectedItem(),
+                    courseCodeEditTxt.getText(),
+                    courseNameEditTxt.getText(),
+                    courseSectionEditTxt.getText(),
+                    courseLectureEditTxt.getText(),
+                    courseCapacityEditTxt.getText(),
+                    courseLocationEditTxt.getText(),
+                    courseTeacherEditTxt.getText()
+            );
+
+            // Remove the old course correctly
+            Iterator<Course> iterator = currentCourseList.iterator();
+            while (iterator.hasNext()) {
+                Course course = iterator.next();
+                if (Objects.equals(course.getCourseCode(), courseTable.getSelectionModel().getSelectedItem().getCourseCode())
+                        || Objects.equals(course.getCourseName(), courseTable.getSelectionModel().getSelectedItem().getCourseName())) {
+                    iterator.remove();
+                    break;
+                }
             }
-            currentCourseList.remove(new Course(
-                    courseTable.getSelectionModel().getSelectedItem().getCourseName(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseCode(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseSection(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseLecture(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseCapacity(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseLocation(),
-                    courseTable.getSelectionModel().getSelectedItem().getCourseTeacher()
-            ));
+
+            // Create and add the updated course
             Course tempCourse = getCourse();
             currentCourseList.add(tempCourse);
             courseTableViewList.set(courseTable.getSelectionModel().getSelectedIndex(), tempCourse);
+
+            // Only set items once
             courseTable.setItems(courseTableViewList);
         }
     }
+
 
 }
