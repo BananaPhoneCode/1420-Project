@@ -23,9 +23,7 @@ import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ManagementController implements Initializable {
     private static final Duration ANIMATION_DURATION = Duration.seconds(0.5);
@@ -43,6 +41,7 @@ public class ManagementController implements Initializable {
     ImageView FacManagement;
     @FXML
     ImageView EveManagement;
+
     //Subject Class @FXML:
     @FXML
     private TableView<Subject> subjectTable = new TableView<>();
@@ -56,19 +55,62 @@ public class ManagementController implements Initializable {
     @FXML
     TextField subjectNameTxt = new TextField();
     @FXML
-    TextField subjectDeleteTxt = new TextField();
+    TextField subjectCodeEditTxt = new TextField();
+    @FXML
+    TextField subjectNameEditTxt = new TextField();
     @FXML
     TextField subjectSearchBar = new TextField();
     @FXML
     AnchorPane subjectAddButtonMenu, subjectDeleteButtonMenu, subjectEditButtonMenu;
+
+    //COURSE PAGE - AISHA
     //Course Class @ FXML;
+    //Course Table
+    @FXML
+    private TableView<Course> courseTable = new TableView<>();
+    @FXML
+    private TableColumn<Course, String> CourseName = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseCode = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseLecture = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSection = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSubjectName = new TableColumn<>();
+
+    @FXML
+    AnchorPane courseAddButtonMenu, courseDeleteButtonMenu, courseEditButtonMenu;
+
+    @FXML
+    TextField courseCodeTxt = new TextField();
+    @FXML
+    TextField courseNameTxt = new TextField();
+    @FXML
+    TextField courseLectureTxt = new TextField();
+    @FXML
+    TextField courseSectionTxt = new TextField();
+    @FXML
+    TextField courseDeleteTxt = new TextField();
+    @FXML
+    TextField courseSearchBar = new TextField();
+
+    @FXML
+    //private AnchorPane pane3, pane4;
+    ObservableList<Course> courseTableViewList = FXCollections.observableArrayList();
+    ObservableList<Course> courseSearchTableViewList = FXCollections.observableArrayList();
+    ArrayList<Course> currentCourseList = new EditCourseList().Generate();
+
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
+
+    //old way
     @FXML
     private ListView<String> EnrollmentListView = new ListView<>(); //allows user to scroll through enrollment
-    private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
+    //private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
+
     @FXML
-    private AnchorPane pane1,pane2;
+    private AnchorPane pane1, pane2;
     ObservableList<Subject> subjectTableViewList = FXCollections.observableArrayList();
     ObservableList<Subject> subjectSearchTableViewList = FXCollections.observableArrayList();
     ArrayList<Subject> currentSubjectList = new EditSubjectList().Generate();
@@ -80,13 +122,26 @@ public class ManagementController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         //Initialize Subject List and Subject Admin Menu Buttons
+        currentSubjectList.sort(new Comparator<Subject>() {
+            @Override
+            public int compare(Subject o1, Subject o2) {
+                return o1.getSubjectName().compareToIgnoreCase(o2.getSubjectName());
+            }
+        });
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
         subjectTable.setItems(subjectTableViewList);
 
-        // Course
-        coursesListView.getItems().addAll(Courses);
+        //COURSE
+        //Course Table Setup
+        courseTableViewList.addAll(currentCourseList);
+        CourseCode.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseCode"));
+        CourseName.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseName"));
+        CourseSection.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseSection"));
+        CourseLecture.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseLecture"));
+        courseTable.setItems(courseTableViewList);
+
         pane1.setVisible(false);
 
         // Initial animations
@@ -107,7 +162,6 @@ public class ManagementController implements Initializable {
             fadeTransition.setOnFinished(event1 -> pane1.setVisible(false));
             createTranslateTransition(pane2, -600, ANIMATION_DURATION).play();
         });
-
 
     }
 
@@ -155,6 +209,7 @@ public class ManagementController implements Initializable {
         }
     }
 
+    //course
     public void course(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Course.fxml"));
@@ -214,76 +269,192 @@ public class ManagementController implements Initializable {
             // Show an error message to the user
         }
     }
+
     //Subject Page Buttons
-    public void subjectAddButton(ActionEvent event) throws IOException{
-        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
+    public void subjectAddButton(ActionEvent event) throws IOException {
+        Subject tempSubject = new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        subjectTable.getItems().add(tempSubject);
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        currentSubjectList.add(tempSubject);
     }
-    public void subjectRemoveButton(ActionEvent event) throws IOException{
-        if(subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()){}
-        else{
-            System.err.println("DELETE "+subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+
+    public void subjectRemoveButton(ActionEvent event) throws IOException {
+        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+            System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
+            currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
+            subjectTableViewList.setAll(currentSubjectList);
+            subjectTable.setItems(subjectTableViewList);
+
+        }
+    }
+    public void subjectEditButton(ActionEvent event) throws IOException {
+        if (!subjectTable.getSelectionModel().getSelectedItems().isEmpty()) {
+            System.err.println("EDIT " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Edit(subjectTable.getSelectionModel().getSelectedItem(), subjectCodeEditTxt.getText(), subjectNameEditTxt.getText());
+            for (Subject subject : currentSubjectList) {
+                if(Objects.equals(subject.getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectCode())
+                 ||Objects.equals(subject.getSubjectName(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName())
+                ) {currentSubjectList.remove(subject); break;}
+            }
+            currentSubjectList.remove(new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName()));
+            Subject tempSubject = getSubject();
+            currentSubjectList.add(tempSubject);
+            subjectTableViewList.set(subjectTable.getSelectionModel().getSelectedIndex(), tempSubject);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
+
+    private Subject getSubject() {
+        Subject tempSubject;
+        if(Objects.equals(subjectCodeEditTxt.getText(), "")){tempSubject = new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectNameEditTxt.getText());}
+        else if(Objects.equals(subjectNameEditTxt.getText(), "")){tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectTable.getSelectionModel().getSelectedItem().getSubjectName());}
+        else{tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectNameEditTxt.getText());}
+        return tempSubject;
+    }
+
+    public void searchSubjectList(ActionEvent event) throws IOException {
+        subjectSearchTableViewList.clear();
+        for (Subject subject : currentSubjectList) {
+            if (subject.getSubjectName().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())
+                    || subject.getSubjectCode().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())) {
+                subjectSearchTableViewList.add(subject);
+            }
+        }
+        if (subjectSearchBar.getText().equals("")) {
+            subjectTable.setItems(subjectTableViewList);
+        } else {
+            subjectTable.setItems(subjectSearchTableViewList);
+        }
+    }
+
+    static boolean subjectAddButtonState = false;
+    static boolean subjectDeleteButtonState = false;
+    static boolean subjectEditButtonState = false;
+
+    public void showAddButton(ActionEvent event) throws IOException {
+        if (!subjectAddButtonState) {
+            subjectAddButtonState = true;
+            subjectDeleteButtonState = false;
+            subjectEditButtonState = false;
+            subjectAddButtonMenu.setVisible(true);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(false);
+        } else {
+            subjectAddButtonState = false;
+            subjectAddButtonMenu.setVisible(false);
+        }
+    }
+
+    public void showDeleteButton(ActionEvent event) throws IOException {
+        if (!subjectDeleteButtonState) {
+            subjectAddButtonState = false;
+            subjectDeleteButtonState = true;
+            subjectEditButtonState = false;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(true);
+            subjectEditButtonMenu.setVisible(false);
+        } else {
+            subjectDeleteButtonState = false;
+            subjectDeleteButtonMenu.setVisible(false);
+        }
+    }
+
+    public void showEditButton(ActionEvent event) throws IOException {
+        if (!subjectEditButtonState) {
+            subjectAddButtonState = false;
+            subjectDeleteButtonState = false;
+            subjectEditButtonState = true;
+            subjectAddButtonMenu.setVisible(false);
+            subjectDeleteButtonMenu.setVisible(false);
+            subjectEditButtonMenu.setVisible(true);
+        } else {
+            subjectEditButtonState = false;
+            subjectEditButtonMenu.setVisible(false);
+        }
+    }
+    //End of Subject Page Buttons
+
+
+    //Start of Course Page Buttons
+    //Course Add Method
+    public void courseAddButton(ActionEvent event) throws IOException {
+        courseTable.getItems().add(new Course(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText()));
+        new EditCourseList().Add(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText());
+    }
+
+    //Course Remove Method
+    public void courseRemoveButton(ActionEvent event) throws IOException {
+        if (courseTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+        } else {
+            System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
             currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
             subjectTableViewList.setAll(currentSubjectList);
             subjectTable.setItems(subjectTableViewList);
         }
     }
-    public void searchSubjectList(ActionEvent event) throws IOException{
-        subjectSearchTableViewList.clear();
-        for(Subject subject : currentSubjectList){
-            if(subject.getSubjectName().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())
-                    || subject.getSubjectCode().toUpperCase().contains(subjectSearchBar.getText().toUpperCase())){
-                subjectSearchTableViewList.add(subject);
+    //Search Course
+    public void searchCourseList(ActionEvent event) throws IOException {
+        courseSearchTableViewList.clear();
+        for (Course course : currentCourseList) {
+            if (course.getCourseName().toUpperCase().contains(courseSearchBar.getText().toUpperCase())
+                    || course.getCourseCode().toUpperCase().contains(courseSearchBar.getText().toUpperCase())) {
+                courseSearchTableViewList.add(course);
             }
         }
-        if(subjectSearchBar.getText().equals("")){subjectTable.setItems(subjectTableViewList);}
-        else{subjectTable.setItems(subjectSearchTableViewList);}
-    }
-    static boolean subjectAddButtonState=false;
-    static boolean subjectDeleteButtonState=false;
-    static boolean subjectEditButtonState=false;
-    public void showAddButton(ActionEvent event) throws IOException{
-        if(!subjectAddButtonState) {
-            subjectAddButtonState=true;
-            subjectDeleteButtonState=false;
-            subjectEditButtonState=false;
-            subjectAddButtonMenu.setVisible(true);
-            subjectDeleteButtonMenu.setVisible(false);
-            subjectEditButtonMenu.setVisible(false);
-        }
-        else{
-            subjectAddButtonState=false;
-            subjectAddButtonMenu.setVisible(false);
+        //course search bar
+        if (courseSearchBar.getText().equals("")) {
+            subjectTable.setItems(subjectTableViewList);
+        } else {
+            courseTable.setItems(courseSearchTableViewList);
         }
     }
-    public void showDeleteButton(ActionEvent event) throws IOException{
-        if(!subjectDeleteButtonState) {
-            subjectAddButtonState=false;
-            subjectDeleteButtonState=true;
-            subjectEditButtonState=false;
-            subjectAddButtonMenu.setVisible(false);
-            subjectDeleteButtonMenu.setVisible(true);
-            subjectEditButtonMenu.setVisible(false);
-        }
-        else{
-            subjectDeleteButtonState=false;
-            subjectDeleteButtonMenu.setVisible(false);
-        }
-    }
-    public void showEditButton(ActionEvent event) throws IOException{
-        if(!subjectEditButtonState) {
-            subjectAddButtonState=false;
-            subjectDeleteButtonState=false;
-            subjectEditButtonState=true;
-            subjectAddButtonMenu.setVisible(false);
-            subjectDeleteButtonMenu.setVisible(false);
-            subjectEditButtonMenu.setVisible(true);
-        }
-        else{
-            subjectEditButtonState=false;
-            subjectEditButtonMenu.setVisible(false);
+
+    static boolean courseAddButtonState = false;
+    static boolean courseDeleteButtonState = false;
+    static boolean courseEditButtonState = false;
+
+    public void CourseshowAddButton(ActionEvent event) throws IOException {
+        if (!courseAddButtonState) {
+            courseAddButtonState = true;
+            courseDeleteButtonState = false;
+            courseEditButtonState = false;
+            courseAddButtonMenu.setVisible(true);
+            courseDeleteButtonMenu.setVisible(false);
+            courseEditButtonMenu.setVisible(false);
+        } else {
+            courseAddButtonState = false;
+            courseAddButtonMenu.setVisible(false);
         }
     }
-    //End of Subject Page Buttons
+
+
+    public void CourseshowDeleteButton(ActionEvent event) throws IOException {
+        if (!courseDeleteButtonState) {
+            courseAddButtonState = false;
+            courseDeleteButtonState = true;
+            courseEditButtonState = false;
+            courseAddButtonMenu.setVisible(false);
+            courseDeleteButtonMenu.setVisible(true);
+            courseEditButtonMenu.setVisible(false);
+        } else {
+            courseDeleteButtonState = false;
+            courseDeleteButtonMenu.setVisible(false);
+        }
+    }
+
+    public void CourseEditButton(ActionEvent event) throws IOException {
+        if (!courseEditButtonState) {
+            courseAddButtonState = false;
+            courseDeleteButtonState = false;
+            courseEditButtonState = true;
+            courseAddButtonMenu.setVisible(false);
+            courseDeleteButtonMenu.setVisible(false);
+            courseEditButtonMenu.setVisible(true);
+        } else {
+            courseEditButtonState = false;
+            courseEditButtonMenu.setVisible(false);
+        }
+    }
 }
