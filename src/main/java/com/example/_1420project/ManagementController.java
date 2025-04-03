@@ -23,9 +23,7 @@ import org.controlsfx.control.action.Action;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ManagementController implements Initializable {
     private static final Duration ANIMATION_DURATION = Duration.seconds(0.5);
@@ -43,6 +41,7 @@ public class ManagementController implements Initializable {
     ImageView FacManagement;
     @FXML
     ImageView EveManagement;
+
     //Subject Class @FXML:
     @FXML
     private TableView<Subject> subjectTable = new TableView<>();
@@ -56,7 +55,9 @@ public class ManagementController implements Initializable {
     @FXML
     TextField subjectNameTxt = new TextField();
     @FXML
-    TextField subjectDeleteTxt = new TextField();
+    TextField subjectCodeEditTxt = new TextField();
+    @FXML
+    TextField subjectNameEditTxt = new TextField();
     @FXML
     TextField subjectSearchBar = new TextField();
     @FXML
@@ -71,31 +72,67 @@ public class ManagementController implements Initializable {
     private TableColumn<Course, String> CourseName = new TableColumn<>();
     @FXML
     private TableColumn<Course, String> CourseCode = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseLecture = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSection = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseSubjectName = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseCapacity = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseLocation = new TableColumn<>();
+    @FXML
+    private TableColumn<Course, String> CourseTeacher = new TableColumn<>();
 
     @FXML
     AnchorPane courseAddButtonMenu, courseDeleteButtonMenu, courseEditButtonMenu;
 
+    //all data attributes text field initialization
     @FXML
     TextField courseCodeTxt = new TextField();
     @FXML
     TextField courseNameTxt = new TextField();
     @FXML
+    TextField courseLectureTxt = new TextField();
+    @FXML
+    TextField courseSectionTxt = new TextField();
+    @FXML
+    TextField courseCapacityTxt = new TextField();
+    @FXML
+    TextField courseLocationTxt = new TextField();
+    @FXML
+    TextField courseTeacherTxt = new TextField();
+
+    @FXML
     TextField courseDeleteTxt = new TextField();
     @FXML
     TextField courseSearchBar = new TextField();
 
+    //Editing text fields
     @FXML
-    private AnchorPane pane3, pane4;
+    TextField courseCodeEditTxt = new TextField();
+    @FXML
+    TextField courseNameEditTxt = new TextField();
+    @FXML
+    TextField courseLectureEditTxt = new TextField();
+    @FXML
+    TextField courseSectionEditTxt= new TextField();
+    @FXML
+    TextField courseCapacityEditTxt= new TextField();
+    @FXML
+    TextField courseLocationEditTxt= new TextField();
+    @FXML
+    TextField courseTeacherEditTxt= new TextField();
+
+    @FXML
+    //private AnchorPane pane3, pane4;
     ObservableList<Course> courseTableViewList = FXCollections.observableArrayList();
     ObservableList<Course> courseSearchTableViewList = FXCollections.observableArrayList();
     ArrayList<Course> currentCourseList = new EditCourseList().Generate();
 
     @FXML
     private ListView<String> coursesListView = new ListView<>(); //allows user to scroll through courses
-
-    @FXML
-    private ListView<String> EnrollmentListView = new ListView<>(); //allows user to scroll through enrollment
-    private String[] Courses = {"Calculus 1", "Literature Basics", "Introduction to Programming", "Introduction to Chemistry", "Introduction to French", "Water Resources"};
 
     @FXML
     private AnchorPane pane1, pane2;
@@ -105,11 +142,16 @@ public class ManagementController implements Initializable {
 
     public ManagementController() throws IOException {
     }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         //Initialize Subject List and Subject Admin Menu Buttons
+        currentSubjectList.sort(new Comparator<Subject>() {
+            @Override
+            public int compare(Subject o1, Subject o2) {
+                return o1.getSubjectName().compareToIgnoreCase(o2.getSubjectName());
+            }
+        });
         subjectTableViewList.addAll(currentSubjectList);
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
@@ -120,6 +162,12 @@ public class ManagementController implements Initializable {
         courseTableViewList.addAll(currentCourseList);
         CourseCode.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseCode"));
         CourseName.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseName"));
+        CourseSection.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseSection"));
+        CourseLecture.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseLecture"));
+        CourseCapacity.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseCapacity"));
+        CourseLocation.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseLocation"));
+        CourseTeacher.setCellValueFactory(new PropertyValueFactory<Course, String>("CourseTeacher"));
+
         courseTable.setItems(courseTableViewList);
 
         pane1.setVisible(false);
@@ -262,19 +310,45 @@ public class ManagementController implements Initializable {
 
     //Subject Page Buttons
     public void subjectAddButton(ActionEvent event) throws IOException {
-        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
+        Subject tempSubject = new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        subjectTable.getItems().add(tempSubject);
         new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        currentSubjectList.add(tempSubject);
     }
 
     public void subjectRemoveButton(ActionEvent event) throws IOException {
-        if (subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
-        } else {
+        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
             System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
             currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
             subjectTableViewList.setAll(currentSubjectList);
             subjectTable.setItems(subjectTableViewList);
+
         }
+    }
+    public void subjectEditButton(ActionEvent event) throws IOException {
+        if (!subjectTable.getSelectionModel().getSelectedItems().isEmpty()) {
+            System.err.println("EDIT " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
+            new EditSubjectList().Edit(subjectTable.getSelectionModel().getSelectedItem(), subjectCodeEditTxt.getText(), subjectNameEditTxt.getText());
+            for (Subject subject : currentSubjectList) {
+                if(Objects.equals(subject.getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectCode())
+                 ||Objects.equals(subject.getSubjectName(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName())
+                ) {currentSubjectList.remove(subject); break;}
+            }
+            currentSubjectList.remove(new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectTable.getSelectionModel().getSelectedItem().getSubjectName()));
+            Subject tempSubject = getSubject();
+            currentSubjectList.add(tempSubject);
+            subjectTableViewList.set(subjectTable.getSelectionModel().getSelectedIndex(), tempSubject);
+            subjectTable.setItems(subjectTableViewList);
+        }
+    }
+
+    private Subject getSubject() {
+        Subject tempSubject;
+        if(Objects.equals(subjectCodeEditTxt.getText(), "")){tempSubject = new Subject(subjectTable.getSelectionModel().getSelectedItem().getSubjectCode(), subjectNameEditTxt.getText());}
+        else if(Objects.equals(subjectNameEditTxt.getText(), "")){tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectTable.getSelectionModel().getSelectedItem().getSubjectName());}
+        else{tempSubject = new Subject(subjectCodeEditTxt.getText(),subjectNameEditTxt.getText());}
+        return tempSubject;
     }
 
     public void searchSubjectList(ActionEvent event) throws IOException {
@@ -341,11 +415,13 @@ public class ManagementController implements Initializable {
 
 
     //Start of Course Page Buttons
+    //Course Add Method
     public void courseAddButton(ActionEvent event) throws IOException {
-        subjectTable.getItems().add(new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText()));
-        new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+        courseTable.getItems().add(new Course(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText(), courseCapacityTxt.getText(), courseLocationTxt.getText(), courseTeacherTxt.getText()));
+        new EditCourseList().Add(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText(), courseCapacityTxt.getText(), courseLocationTxt.getText(), courseTeacherTxt.getText());
     }
-    //Method to remove a course
+
+    //Course Remove Method
     public void courseRemoveButton(ActionEvent event) throws IOException {
         if (courseTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
         } else {
@@ -356,7 +432,26 @@ public class ManagementController implements Initializable {
             subjectTable.setItems(subjectTableViewList);
         }
     }
-    //Method to search course
+    //constructor for course
+    private Course getCourse() {
+        Course tempCourse;
+        if(Objects.equals(courseCodeEditTxt.getText(), "")){tempCourse = new Course(courseTable.getSelectionModel().getSelectedItem().getCourseCode(), courseNameEditTxt.getText(), courseSectionEditTxt.getText(), courseLectureEditTxt.getText(), courseCapacityEditTxt.getText(), courseLocationEditTxt.getText(), courseTeacherEditTxt.getText());}
+
+        else if(Objects.equals(courseNameEditTxt.getText(), "")){
+            tempCourse = new Course(
+                    courseTable.getSelectionModel().getSelectedItem().getCourseName(), // Keep existing course name
+                    courseCodeEditTxt.getText(),
+                    courseSectionEditTxt.getText(),
+                    courseLectureEditTxt.getText(),
+                    courseCapacityEditTxt.getText(),
+                    courseLocationEditTxt.getText(),
+                    courseTeacherEditTxt.getText()
+            );
+        }
+        else{tempCourse = new Course(courseCodeEditTxt.getText(),courseNameEditTxt.getText(),courseSectionEditTxt.getText(), courseLectureEditTxt.getText(),courseCapacityEditTxt.getText(), courseLocationEditTxt.getText(), courseTeacherTxt.getText());}
+        return tempCourse;
+    }
+    //Search Course
     public void searchCourseList(ActionEvent event) throws IOException {
         courseSearchTableViewList.clear();
         for (Course course : currentCourseList) {
@@ -405,17 +500,36 @@ public class ManagementController implements Initializable {
         }
     }
 
-    public void CourseEditButton(ActionEvent event) throws IOException {
-        if (!subjectEditButtonState) {
-            subjectAddButtonState = false;
-            subjectDeleteButtonState = false;
-            subjectEditButtonState = true;
-            subjectAddButtonMenu.setVisible(false);
-            subjectDeleteButtonMenu.setVisible(false);
-            subjectEditButtonMenu.setVisible(true);
-        } else {
-            subjectEditButtonState = false;
-            subjectEditButtonMenu.setVisible(false);
+    public void CourseshowEditButton(ActionEvent event) throws IOException {
+        if (!courseEditButtonState) {
+            courseAddButtonState = false;
         }
     }
+
+    //new edit button working
+    public void courseEditButton(ActionEvent event) throws IOException {
+        if (!courseTable.getSelectionModel().getSelectedItems().isEmpty()) {
+            System.err.println("EDIT " + courseTable.getSelectionModel().getSelectedItem().getCourseName());
+            new EditCourseList().Edit(courseTable.getSelectionModel().getSelectedItem(), courseCodeEditTxt.getText(), courseNameEditTxt.getText());
+            for (Course course : currentCourseList) {
+                if(Objects.equals(course.getCourseCode(), courseTable.getSelectionModel().getSelectedItem().getCourseCode())
+                        ||Objects.equals(course.getCourseName(), courseTable.getSelectionModel().getSelectedItem().getCourseName())
+                ) {currentCourseList.remove(course); break;}
+            }
+            currentCourseList.remove(new Course(
+                    courseTable.getSelectionModel().getSelectedItem().getCourseName(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseCode(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseSection(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseLecture(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseCapacity(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseLocation(),
+                    courseTable.getSelectionModel().getSelectedItem().getCourseTeacher()
+            ));
+            Course tempCourse = getCourse();
+            currentCourseList.add(tempCourse);
+            courseTableViewList.set(courseTable.getSelectionModel().getSelectedIndex(), tempCourse);
+            courseTable.setItems(courseTableViewList);
+        }
+    }
+
 }

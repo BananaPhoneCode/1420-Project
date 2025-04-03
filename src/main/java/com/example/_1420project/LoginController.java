@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.List;
+
 
 public class LoginController {
     @FXML
@@ -27,8 +27,12 @@ public class LoginController {
     private String currentRole;
     private static final String EXCEL_FILE_PATH = "src/UMS_Data.xlsx";
 
-    private final ArrayList<User> students = new ArrayList<>();
-    private final ArrayList<User> faculties = new ArrayList<>();
+    private ArrayList<User> students = new ArrayList<>();
+    private ArrayList<User> faculties = new ArrayList<>();
+
+    //hardcoded admin login b/c not found in excel sheet
+    private String adminUser = "admin1";
+    private String adminPass = "default123";
 
     public LoginController() {
         System.out.println("LoginController called");
@@ -50,7 +54,7 @@ public class LoginController {
             System.out.println("Workbook opened successfully.");
 
             //opening students sheet and looping through each row, adding all student usernames and passwords to the student arraylist via user objects
-            Sheet studentsSheet = workbook.getSheet("Students");
+            Sheet studentsSheet = workbook.getSheet("Students ");
             if (studentsSheet != null) {
                 for (Row row : studentsSheet) {
                     if(row.getRowNum()==0){continue;}
@@ -68,7 +72,7 @@ public class LoginController {
             }
 
             //opening faculties sheet and looping through each row, adding all faculty usernames and passwords to the faculties arraylist via user objects
-            Sheet facultiesSheet = workbook.getSheet("Faculties");
+            Sheet facultiesSheet = workbook.getSheet("Faculties ");
             if (facultiesSheet != null) {
                 for (Row row : facultiesSheet) {
                     if(row.getRowNum()==0){continue;}
@@ -102,22 +106,20 @@ public class LoginController {
     private boolean authenticateUser(String username, String password) {
         System.out.println("Checking username: " + username);  // debugging
 
-        String enteredUsername = username;
-        //checking the contents of the arraylists (ERROR FOUND!!! THE LISTS ARE EMPTY)
         System.out.println(students);
         System.out.println(faculties);
 
-        // is enteredusername found in the students array? does the password match? if yes to both assign role of student
+        // is username found in the students array? does the password match? if yes to both assign role of student
         for (User user : students) {
             String loadedUsername = user.getUsername();
             System.out.println(loadedUsername);
             System.out.println("Checking student username: " + loadedUsername);  // Debugging log to show loaded username
-            if (loadedUsername.equals(enteredUsername)) {
+            if (loadedUsername.equals(username)) {
                 if (user.getPassword().equals(password)) {
                     assignRole("student");
                     return true;
                 } else {
-                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    showInvalidLoginAlert("Invalid username or password. Please try again.");
                     return false;
                 }
             }
@@ -127,27 +129,31 @@ public class LoginController {
         for (User user : faculties) {
             String loadedUsername = user.getUsername();
             System.out.println("Checking faculty username: " + loadedUsername);
-            if (loadedUsername.equals(enteredUsername)) {
+            if (loadedUsername.equals(username)) {
                 if (user.getPassword().equals(password)) {
                     assignRole("faculty");
                     return true;
                 } else {
-                    showInvalidLoginAlert("Invalid password. Please try again.");
+                    showInvalidLoginAlert("Invalid username or password. Please try again.");
                     return false;
                 }
-            }else{
-                System.out.println("no match");
             }
         }
 
-        showInvalidLoginAlert("Username not found. Please try again.");
+        if (username.equals(adminUser) && password.equals(adminPass)) {
+            assignRole("admin");
+            return true;
+        }
+        showInvalidLoginAlert("Invalid username or password. Please try again.");
         return false;
     }
 
+    //role assignments
     private void assignRole(String role) {
         this.currentRole = role;
     }
 
+    //login popup box
     public void login(ActionEvent event) throws IOException {
         String username = Username.getText();
         String password = Password.getText();
@@ -157,17 +163,11 @@ public class LoginController {
         }
 
         if (authenticateUser(username, password)) {
-            switch (this.currentRole) {
-                case "student":
-                    navigateToDashboard(event, "Dashboard.fxml");
-                    break;
-                case "faculty":
-                    navigateToDashboard(event, "FacultyDashboard.fxml");
-                    break;
-            }
+            navigateToDashboard(event, "Dashboard.fxml");
         }
     }
 
+    //takes user to dashboard
     private void navigateToDashboard(ActionEvent event, String fxmlFile) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
         Parent root = loader.load();
@@ -178,6 +178,7 @@ public class LoginController {
         stage.show();
     }
 
+    //method to display error messages in a popup!
     private void showInvalidLoginAlert(String message) {
         Alert alert = new Alert(AlertType.ERROR);
         alert.setTitle("Login Error");
@@ -186,6 +187,7 @@ public class LoginController {
         alert.showAndWait();
     }
 
+    //used by developers (us) to skip entering the login information so the pages can be viewed easily
     public void bypass(ActionEvent event) throws IOException {
         navigateToDashboard(event, "Dashboard.fxml");
     }
