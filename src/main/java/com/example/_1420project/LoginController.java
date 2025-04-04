@@ -106,9 +106,11 @@ public class LoginController {
     private boolean authenticateUser(String username, String password) {
         System.out.println("Checking username: " + username);  // debugging
 
-        System.out.println(students);
-        System.out.println(faculties);
-
+        if (username.equals(adminUser) && password.equals(adminPass)) {
+            UserSession.getInstance().setUser(adminUser, "admin"); // Set session!
+            assignRole("admin");
+            return true;
+        }
         // is username found in the students array? does the password match? if yes to both assign role of student
         for (User user : students) {
             String loadedUsername = user.getUsername();
@@ -142,10 +144,8 @@ public class LoginController {
             }
         }
 
-        if (username.equals(adminUser) && password.equals(adminPass)) {
-            assignRole("admin");
-            return true;
-        }
+
+
         showInvalidLoginAlert("Invalid username or password. Please try again.");
         return false;
     }

@@ -1,34 +1,20 @@
 package com.example._1420project;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 
 public class StudentController {
-
-    @FXML private Label studentIdText;
-    @FXML private Text studentNameText;
-    @FXML private Text studentAddressText;
-    @FXML private Text studentTelephoneText;
-    @FXML private Text studentTuitionText;
-    @FXML private Text studentCoursesText;
-    @FXML private Text studentEmailText;
-    @FXML private Text studentGradeText;
-    @FXML private Text studentSemText;
-    @FXML private Text studentSubText;
-    @FXML private Text studentLevText;
-    @FXML private Text studentTitleText;
-    @FXML private Text studentProgText;
+//sets up the buttons on the page
     @FXML private Button viewProfileButton;
     @FXML private Button editProfileButton;
+    @FXML private Button changePasswordButton;
+    @FXML private Button addStudentButton;
+    @FXML private Button deleteStudentButton;
 
     private EditStudentList studentListHandler;
 
@@ -37,41 +23,36 @@ public class StudentController {
     }
 
     @FXML
-    private void viewStudentProfile() throws IOException {
-        String studentId = UserSession.getInstance().getUserId();
+    public void initialize() {
+        String role = UserSession.getInstance().getRole();
 
-        Student student = studentListHandler.viewStudentProfile(studentId);
+        // hide everything by default
+        viewProfileButton.setVisible(false);
+        editProfileButton.setVisible(false);
+        changePasswordButton.setVisible(false);
+        addStudentButton.setVisible(false);
+        deleteStudentButton.setVisible(false);
 
-        if (student != null) {
-            studentIdText.setText(student.getStudentId());
-            studentNameText.setText(student.getStudentName());
-            studentAddressText.setText(student.getStudentAddress());
-            studentTelephoneText.setText(student.getStudentTelephone());
-            studentTuitionText.setText(student.getStudentTuition());
-            studentCoursesText.setText(student.getStudentSub());
-            studentEmailText.setText(student.getStudentEmail());
-            studentGradeText.setText(student.getStudentGrade());
-            studentSemText.setText(student.getStudentSem());
-            studentSubText.setText(student.getStudentSub());
-            studentLevText.setText(student.getStudentLev());
-            studentTitleText.setText(student.getStudentTitle());
-            studentProgText.setText(student.getStudentProg());
-        } else {
-            studentNameText.setText("Student not found");
+        //based on role, show/hide buttons by changing visibility settings
+        switch (role) {
+            case "admin":
+                addStudentButton.setVisible(true);
+                deleteStudentButton.setVisible(true);
+                break;
+            case "student":
+                viewProfileButton.setVisible(true);
+                editProfileButton.setVisible(true);
+                changePasswordButton.setVisible(true);
+                break;
+            case "faculty":
+                viewProfileButton.setVisible(true);
+                break;
         }
     }
 
+    //fxml formatting for all of the buttons
     @FXML
-    private void editStudentProfile() throws IOException {
-        String studentId = UserSession.getInstance().getUserId();
-        String newAddress = studentAddressText.getText();
-        String newTelephone = studentTelephoneText.getText();
-
-        studentListHandler.editStudent(studentId, newAddress, newTelephone);
-    }
-
-    @FXML
-    private void editStudent(ActionEvent event) throws IOException {
+    private void editStudent() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/_1420project/EditStudentProfile.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
@@ -80,8 +61,9 @@ public class StudentController {
         stage.setResizable(false);
         stage.show();
     }
+
     @FXML
-    private void viewStudent(ActionEvent event) throws IOException {
+    private void viewStudent() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/_1420project/ViewStudentProfile.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
@@ -91,13 +73,48 @@ public class StudentController {
         stage.show();
     }
 
+    @FXML
+    private void openChangePasswordWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("StudentPassword.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Change Password");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-    // navigation/event handlers (build later)
-    @FXML private void dashboard(ActionEvent event) {}
-    @FXML private void subject(ActionEvent event) {}
-    @FXML private void course(ActionEvent event) {}
-    @FXML private void student(ActionEvent event) {}
-    @FXML private void faculty(ActionEvent event) {}
-    @FXML private void event(ActionEvent event) {}
-    @FXML private void viewEnrolledClasses(ActionEvent event) {}
+    @FXML
+    private void openAddStudentWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddStudent.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Add Student");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void openDeleteStudentWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("DeleteStudent.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Delete Student");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
