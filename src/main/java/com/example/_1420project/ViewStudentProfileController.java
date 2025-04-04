@@ -15,9 +15,7 @@ public class ViewStudentProfileController {
     @FXML private Label semesterLabel;
     @FXML private Label subjectsLabel;
     @FXML private Label titleLabel;
-    @FXML private Label programLabel;
-    @FXML private Label coursesLabel;
-    @FXML private Label gradesLabel;
+    @FXML private Label progressLabel;
     @FXML private Label tuitionLabel;
 
     private final EditStudentList studentListHandler;
@@ -37,33 +35,27 @@ public class ViewStudentProfileController {
             addressLabel.setText("Address: " + student.getStudentAddress());
             telephoneLabel.setText("Telephone: " + student.getStudentTelephone());
             emailLabel.setText("Email: " + student.getStudentEmail());
-            levelLabel.setText("Level: " + student.getStudentLev());
+            levelLabel.setText("Academic Level: " + student.getStudentLev());
             semesterLabel.setText("Semester: " + student.getStudentSem());
             subjectsLabel.setText("Subjects: " + student.getStudentSub());
-            gradesLabel.setText("Grades: " + student.getStudentGrade());
-            coursesLabel.setText("Courses: " + student.getStudentCourses());
+            progressLabel.setText("Progress: " + student.getStudentCourses());
 
             String level = student.getStudentLev().toLowerCase().trim();
             String tuitionAmount;
             String thesisTitle;
-            String programDisplay;
 
             if (level.contains("undergraduate")) {
                 tuitionAmount = "$5000";
-                thesisTitle = "N/A"; // ✅ hide thesis
-                programDisplay = student.getStudentProg(); // ✅ show % as "Program"
+                thesisTitle = "N/A";
             } else if (level.contains("graduate")) {
                 tuitionAmount = "$4000";
-                thesisTitle = student.getStudentTitle(); // ✅ show real thesis
-                programDisplay = student.getStudentProg(); // ✅ show program name
-            } else {
+                thesisTitle = student.getStudentTitle();
+            } else{
                 tuitionAmount = "Unknown";
                 thesisTitle = "Unknown";
-                programDisplay = "Unknown";
             }
 
             titleLabel.setText("Thesis Title: " + thesisTitle);
-            programLabel.setText("Program: " + programDisplay);
             tuitionLabel.setText("Tuition: " + tuitionAmount);
 
         } else {

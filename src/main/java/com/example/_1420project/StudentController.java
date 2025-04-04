@@ -92,7 +92,7 @@ public class StudentController {
     }
 
 
-    // 🔻 Other navigation/event handlers (build later)
+    // navigation/event handlers (build later)
     @FXML private void dashboard(ActionEvent event) {}
     @FXML private void subject(ActionEvent event) {}
     @FXML private void course(ActionEvent event) {}
@@ -100,5 +100,4 @@ public class StudentController {
     @FXML private void faculty(ActionEvent event) {}
     @FXML private void event(ActionEvent event) {}
     @FXML private void viewEnrolledClasses(ActionEvent event) {}
-    @FXML private void viewTuitionStatus(ActionEvent event) {}
 }

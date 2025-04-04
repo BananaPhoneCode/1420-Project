@@ -65,14 +65,11 @@ public class EditStudentList {
         ArrayList<Student> students = Generate();
 
         for (Student student : students) {
-            System.out.println("🆔 Found in Excel: " + student.getStudentId());
-            if (student.getStudentId().trim().equalsIgnoreCase(studentId.trim())) {
-                System.out.println("✅ Match found!");
+            if (student.getStudentId().equals(studentId)) {
                 return student;
             }
         }
 
-        System.out.println("❌ No matching student ID found.");
         return null;
     }
 
