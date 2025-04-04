@@ -112,12 +112,9 @@
          </font>
       </Button>
       <Circle fill="DODGERBLUE" layoutX="758.0" layoutY="26.0" radius="14.0" stroke="BLACK" strokeType="INSIDE" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="12.0" />
-      <Button layoutX="118.0" layoutY="557.0" mnemonicParsing="false" onAction="#showAddButton" prefHeight="18.0" prefWidth="171.0" text="Add Subject Menu" AnchorPane.topAnchor="557.0" />
-      <Button layoutX="118.0" layoutY="591.0" mnemonicParsing="false" onAction="#showDeleteButton" prefHeight="18.0" prefWidth="171.0" text="Delete Subject Menu" AnchorPane.topAnchor="591.0" />
-      <Button layoutX="118.0" layoutY="624.0" mnemonicParsing="false" onAction="#showEditButton" prefHeight="18.0" prefWidth="171.0" text="Edit Subject Menu" AnchorPane.topAnchor="624.0" />
       <AnchorPane fx:id="subjectAddButtonMenu" layoutX="307.0" layoutY="534.0" prefHeight="134.0" prefWidth="450.0" visible="false">
          <children>
-            <Label layoutX="50.0" layoutY="14.0" text="Enter the subject code and name for the new subject." />
+            <Label fx:id="subjectAddAdminLabel" alignment="CENTER" layoutX="6.0" layoutY="14.0" prefHeight="18.0" prefWidth="326.0" text="Enter the subject code and name for the new subject." textAlignment="CENTER" />
             <TextField fx:id="subjectCodeTxt" layoutX="27.0" layoutY="32.0" />
             <Label layoutX="63.0" layoutY="58.0" prefHeight="20.0" prefWidth="90.0" text="Subject Code" textAlignment="CENTER">
                <font>
@@ -141,13 +138,13 @@
       </TableView>
       <AnchorPane fx:id="subjectDeleteButtonMenu" layoutX="307.0" layoutY="534.0" prefHeight="134.0" prefWidth="450.0" visible="false">
          <children>
-            <Label layoutX="92.0" layoutY="14.0" text="Select subject from list and hit delete." />
+            <Label fx:id="subjectDeleteAdminLabel" alignment="CENTER" layoutX="102.0" layoutY="14.0" text="Select subject from list and hit delete." textAlignment="RIGHT" />
             <Button layoutX="102.0" layoutY="86.0" mnemonicParsing="false" onAction="#subjectRemoveButton" prefHeight="26.0" prefWidth="178.0" text="Delete Subject" />
          </children>
       </AnchorPane>
       <AnchorPane fx:id="subjectEditButtonMenu" layoutX="307.0" layoutY="534.0" prefHeight="134.0" prefWidth="450.0" visible="false">
          <children>
-            <Label layoutX="28.0" layoutY="14.0" text="Select subject from list and enter updated code and/or name." />
+            <Label fx:id="subjectEditAdminLabel" alignment="CENTER" layoutX="28.0" layoutY="14.0" text="Select subject from list and enter updated code and/or name." textAlignment="CENTER" />
             <TextField fx:id="subjectCodeEditTxt" layoutX="27.0" layoutY="32.0" />
             <Label layoutX="63.0" layoutY="58.0" prefHeight="20.0" prefWidth="90.0" text="Subject Code" textAlignment="CENTER">
                <font>
@@ -163,13 +160,21 @@
             <Button layoutX="102.0" layoutY="86.0" mnemonicParsing="false" onAction="#subjectEditButton" prefHeight="26.0" prefWidth="178.0" text="Edit Subject" />
          </children>
       </AnchorPane>
-      <Label layoutX="158.0" layoutY="534.0" text="Admin Menu">
-         <font>
-            <Font name="System Bold" size="15.0" />
-         </font></Label>
-      <AnchorPane fx:id="pane2" layoutX="100.0" layoutY="52.0" prefHeight="618.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="-5.0" AnchorPane.leftAnchor="100.0">
+      <AnchorPane fx:id="subjectAdminMenu" layoutX="104.0" layoutY="537.0" prefHeight="124.0" prefWidth="198.0" style="-fx-background-color: #FFA500;">
          <children>
-            <VBox layoutY="28.0" prefHeight="591.0" prefWidth="178.0" spacing="28.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
+            <Button layoutX="14.0" layoutY="21.0" mnemonicParsing="false" onAction="#showAddButton" prefHeight="18.0" prefWidth="171.0" text="Add Subject Menu" AnchorPane.topAnchor="21.0" />
+            <Button layoutX="14.0" layoutY="54.0" mnemonicParsing="false" onAction="#showDeleteButton" prefHeight="18.0" prefWidth="171.0" text="Delete Subject Menu" AnchorPane.topAnchor="54.0" />
+            <Button layoutX="14.0" layoutY="88.0" mnemonicParsing="false" onAction="#showEditButton" prefHeight="18.0" prefWidth="171.0" text="Edit Subject Menu" AnchorPane.topAnchor="88.0" />
+            <Label layoutX="54.0" layoutY="3.0" text="Admin Menu">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="pane2" layoutX="100.0" layoutY="56.0" prefHeight="622.0" prefWidth="178.0" style="-fx-background-color: White;" AnchorPane.bottomAnchor="-10.0" AnchorPane.leftAnchor="100.0">
+         <children>
+            <VBox layoutY="28.0" prefHeight="591.0" prefWidth="178.0" spacing="28.0" AnchorPane.bottomAnchor="0.7999999999999545" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="28.0">
                <children>
                   <Button alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#dashboard" prefHeight="38.0" prefWidth="179.0" style="-fx-background-color: #FFFFFF;" text="Dashboard">
                      <font>

@@ -61,8 +61,13 @@ public class ManagementController implements Initializable {
     @FXML
     TextField subjectSearchBar = new TextField();
     @FXML
-    AnchorPane subjectAddButtonMenu, subjectDeleteButtonMenu, subjectEditButtonMenu;
-
+    AnchorPane subjectAddButtonMenu, subjectDeleteButtonMenu, subjectEditButtonMenu, subjectAdminMenu;
+    @FXML
+    Label subjectAddAdminLabel = new Label();
+    @FXML
+    Label subjectEditAdminLabel = new Label();
+    @FXML
+    Label subjectDeleteAdminLabel = new Label();
     //COURSE PAGE - AISHA
     //Course Class @ FXML;
     //Course Table
@@ -156,6 +161,7 @@ public class ManagementController implements Initializable {
         SubjectCode.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectCode"));
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
         subjectTable.setItems(subjectTableViewList);
+        //if(!Objects.equals(UserSession.getInstance().getRole(), "admin")){subjectAdminMenu.setVisible(false);}
 
         //COURSE
         //Course Table Setup
@@ -310,23 +316,46 @@ public class ManagementController implements Initializable {
 
     //Subject Page Buttons
     public void subjectAddButton(ActionEvent event) throws IOException {
-        Subject tempSubject = new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText());
-        subjectTable.getItems().add(tempSubject);
-        new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
-        currentSubjectList.add(tempSubject);
+        boolean copy = false;
+        for(Subject subject : currentSubjectList){
+            if(Objects.equals(subjectCodeTxt.getText(), subject.getSubjectCode())){
+                copy = true;
+            }
+        }
+        if(copy){subjectAddAdminLabel.setText("Invalid Subject: subject code is not unique");}
+        else if(subjectCodeTxt.getText().isEmpty()||subjectNameTxt.getText().isEmpty()){subjectAddAdminLabel.setText("Invalid Subject: missing parameter");}
+        else{
+            Subject tempSubject = new Subject(subjectCodeTxt.getText(), subjectNameTxt.getText());
+            subjectTable.getItems().add(tempSubject);
+            new EditSubjectList().Add(subjectCodeTxt.getText(), subjectNameTxt.getText());
+            currentSubjectList.add(tempSubject);
+            subjectAddAdminLabel.setText("Enter the subject code and name for the new subject.");
+        }
     }
 
     public void subjectRemoveButton(ActionEvent event) throws IOException {
-        if (!subjectTable.getSelectionModel().getSelectedItem().toString().isBlank()) {
+        if (subjectTable.getSelectionModel().getSelectedItem().getSubjectName().isBlank()){subjectDeleteAdminLabel.setText("Invalid Delete: no selected subject");}
+        else {
             System.err.println("DELETE " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Remove(subjectTable.getSelectionModel().getSelectedItem());
             currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
             subjectTableViewList.setAll(currentSubjectList);
             subjectTable.setItems(subjectTableViewList);
+            subjectDeleteAdminLabel.setText("Select subject from list and click delete.");
         }
     }
     public void subjectEditButton(ActionEvent event) throws IOException {
-        if (!subjectTable.getSelectionModel().getSelectedItems().isEmpty()) {
+        boolean copy = false;
+        for(Subject subject : currentSubjectList){
+            if(Objects.equals(subjectCodeEditTxt.getText(), subject.getSubjectCode())){
+                copy = true;
+            }
+        }
+        if(copy){subjectEditAdminLabel.setText("Invalid Edit: subject code is not unique");}
+        else if (subjectTable.getSelectionModel().getSelectedItems().isEmpty()){
+            subjectEditAdminLabel.setText("Invalid Edit: no selected subject");
+        }
+        else{
             System.err.println("EDIT " + subjectTable.getSelectionModel().getSelectedItem().getSubjectName());
             new EditSubjectList().Edit(subjectTable.getSelectionModel().getSelectedItem(), subjectCodeEditTxt.getText(), subjectNameEditTxt.getText());
             for (Subject subject : currentSubjectList) {
@@ -339,6 +368,7 @@ public class ManagementController implements Initializable {
             currentSubjectList.add(tempSubject);
             subjectTableViewList.set(subjectTable.getSelectionModel().getSelectedIndex(), tempSubject);
             subjectTable.setItems(subjectTableViewList);
+            subjectEditAdminLabel.setText("Select subject from list and enter the new subject code/name");
         }
     }
 
