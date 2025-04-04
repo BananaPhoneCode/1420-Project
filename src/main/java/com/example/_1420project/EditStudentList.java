@@ -19,6 +19,7 @@ public class EditStudentList {
         try (FileInputStream fileInputStream = new FileInputStream(path);
              XSSFWorkbook workbook = new XSSFWorkbook(fileInputStream)) {
 
+            //looking through the student sheet
             Sheet sheet = workbook.getSheet("Students ");
 
             for (Row row : sheet) {
@@ -55,7 +56,7 @@ public class EditStudentList {
         ArrayList<Student> students = Generate();
 
         for (Student student : students) {
-            if (student.getStudentId().trim().equalsIgnoreCase(studentId.trim())) {
+            if (student.getStudentId().equals(studentId)) {
                 return student;
             }
         }
@@ -68,7 +69,6 @@ public class EditStudentList {
              XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheet("Students ");
-            DataFormatter formatter = new DataFormatter();
 
             for (Row row : sheet) {
                 Cell idCell = row.getCell(0);
@@ -94,6 +94,7 @@ public class EditStudentList {
             }
         }
     }
+
     public void updateStudentPassword(String studentId, String newPassword) throws IOException {
         try (FileInputStream fis = new FileInputStream(path);
              XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
@@ -114,30 +115,78 @@ public class EditStudentList {
             }
         }
     }
+
     public void addStudent(Student student) throws IOException {
+        XSSFWorkbook workbook;
+        Sheet sheet;
+
+        // Step 1: Read workbook
+        try (FileInputStream fis = new FileInputStream(path)) {
+            workbook = new XSSFWorkbook(fis);
+            sheet = workbook.getSheet("Students ");
+            if (sheet == null) {
+                sheet = workbook.createSheet("Students ");
+            }
+        }
+
+        // Step 2: Append new row
+        int lastRow = sheet.getLastRowNum() + 1;
+        Row row = sheet.createRow(lastRow);
+
+        row.createCell(0).setCellValue(student.getStudentId());
+        row.createCell(1).setCellValue(student.getStudentName());
+        row.createCell(2).setCellValue(student.getStudentAddress());
+        row.createCell(3).setCellValue(student.getStudentTelephone());
+        row.createCell(4).setCellValue(student.getStudentEmail());
+        row.createCell(5).setCellValue(student.getStudentLev());
+        row.createCell(6).setCellValue(student.getStudentSem());
+        row.createCell(7).setCellValue("");
+        row.createCell(8).setCellValue(student.getStudentSub());
+        row.createCell(9).setCellValue(student.getStudentTitle());
+        row.createCell(10).setCellValue(student.getStudentProg());
+        row.createCell(11).setCellValue(student.getStudentPassword());
+
+        try (FileOutputStream fos = new FileOutputStream(path)) {
+            workbook.write(fos);
+        }
+
+        workbook.close();
+    }
+
+    public boolean deleteStudent(String studentId) throws IOException {
         try (FileInputStream fis = new FileInputStream(path);
              XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
 
             Sheet sheet = workbook.getSheet("Students ");
-            int lastRow = sheet.getLastRowNum() + 1;
-            Row row = sheet.createRow(lastRow);
+            int rowIndexToDelete = -1;
 
-            row.createCell(0).setCellValue(student.getStudentId());
-            row.createCell(1).setCellValue(student.getStudentName());
-            row.createCell(2).setCellValue(student.getStudentAddress());
-            row.createCell(3).setCellValue(student.getStudentTelephone());
-            row.createCell(4).setCellValue(student.getStudentEmail());
-            row.createCell(5).setCellValue(student.getStudentLev());
-            row.createCell(6).setCellValue(student.getStudentSem());
-            row.createCell(7).setCellValue(""); // Placeholder column
-            row.createCell(8).setCellValue(student.getStudentSub());
-            row.createCell(9).setCellValue(student.getStudentTitle());
-            row.createCell(10).setCellValue(student.getStudentProg());
-            row.createCell(11).setCellValue(student.getStudentPassword());
+            for (Row row : sheet) {
+                Cell idCell = row.getCell(0);
+                if (idCell != null && formatter.formatCellValue(idCell).trim().equalsIgnoreCase(studentId.trim())) {
+                    rowIndexToDelete = row.getRowNum();
+                    break;
+                }
+            }
 
-            try (FileOutputStream fos = new FileOutputStream(path)) {
-                workbook.write(fos);
+            if (rowIndexToDelete != -1) {
+                int lastRowNum = sheet.getLastRowNum();
+                if (rowIndexToDelete < lastRowNum) {
+                    sheet.shiftRows(rowIndexToDelete + 1, lastRowNum, -1);
+                } else {
+                    Row removingRow = sheet.getRow(rowIndexToDelete);
+                    if (removingRow != null) {
+                        sheet.removeRow(removingRow);
+                    }
+                }
+
+                try (FileOutputStream fos = new FileOutputStream(path)) {
+                    workbook.write(fos);
+                }
+
+                workbook.close();
+                return true;
             }
         }
+        return false;
     }
 }
