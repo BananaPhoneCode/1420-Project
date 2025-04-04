@@ -17,6 +17,7 @@ public class StudentPasswordController {
         studentListHandler = new EditStudentList();
     }
 
+    //when save changes button is clicked on the change password box, updates current logged in student's password
     @FXML
     public void handleStudentPassword() throws IOException {
         String studentId = UserSession.getInstance().getUserId();
@@ -26,6 +27,7 @@ public class StudentPasswordController {
         String newPass = newPasswordField.getText();
         String confirm = confirmPasswordField.getText();
 
+        //error handling
         if (student == null) {
             statusLabel.setText("User not found.");
         } else if (!student.getStudentPassword().equals(current)) {

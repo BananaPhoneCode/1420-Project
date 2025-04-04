@@ -12,7 +12,7 @@ public class Student {
     private final String StudentSub;
     private final String StudentLev;
     private final String StudentTitle;
-    private final String StudentProg; // this is the progress field
+    private final String StudentProg;
 
 
 

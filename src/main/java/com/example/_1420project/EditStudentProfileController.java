@@ -11,12 +11,14 @@ public class EditStudentProfileController {
     @FXML private TextField telephoneField;
     @FXML private Label statusLabel;
 
+    //helps with excel sheet input/output
     private final EditStudentList studentListHandler;
 
     public EditStudentProfileController() throws IOException {
         studentListHandler = new EditStudentList();
     }
 
+    //pre-fills popup box with current address and phone number
     @FXML
     public void initialize() throws IOException {
         String studentId = UserSession.getInstance().getUserId();
@@ -28,6 +30,7 @@ public class EditStudentProfileController {
         }
     }
 
+    //updates address and phone number
     @FXML
     private void handleSave() throws IOException {
         String studentId = UserSession.getInstance().getUserId();

@@ -1,4 +1,5 @@
 package com.example._1420project;
+//fxml layout of the view profile 'page''
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -68,7 +69,7 @@ public class ViewStudentProfileController {
         }
     }
 
-    // ✅ Opens Enrolled Courses Window
+
     @FXML
     private void openEnrolledCoursesWindow() {
         try {
@@ -85,7 +86,6 @@ public class ViewStudentProfileController {
         }
     }
 
-    // 🔴 Reusable alert for errors
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");

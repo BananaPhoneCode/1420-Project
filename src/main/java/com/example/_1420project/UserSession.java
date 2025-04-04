@@ -1,5 +1,8 @@
 package com.example._1420project;
 
+//an entire class dedicated to tracking the current logged in user's username and role
+//the backbone of the management of role-based views
+
 public class UserSession {
     private static UserSession instance;
     private String userId;     // studentId or facultyId
