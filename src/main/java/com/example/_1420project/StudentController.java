@@ -16,12 +16,7 @@ public class StudentController {
     @FXML private Button addStudentButton;
     @FXML private Button deleteStudentButton;
 
-    private EditStudentList studentListHandler;
-
-    public StudentController() throws IOException {
-        studentListHandler = new EditStudentList();
-    }
-
+    //role-based views management
     @FXML
     public void initialize() {
         String role = UserSession.getInstance().getRole();
@@ -50,7 +45,7 @@ public class StudentController {
         }
     }
 
-    //fxml formatting for all of the buttons
+    //fxml formatting for all of the student buttons
     @FXML
     private void editStudent() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/_1420project/EditStudentProfile.fxml"));
