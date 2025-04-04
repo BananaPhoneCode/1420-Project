@@ -58,7 +58,7 @@ public class facultyViewAssignedCourses {
             throw new RuntimeException(e);
         }
     }
-    public Sheet sheet = xssfWorkbook.getSheet("Faculties");
+    public Sheet sheet = xssfWorkbook.getSheet("Faculties ");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
 
     public void facultyViewAssignedCourses(ActionEvent event) throws IOException {

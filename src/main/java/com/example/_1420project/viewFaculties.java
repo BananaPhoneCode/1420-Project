@@ -67,7 +67,7 @@ public class viewFaculties {
             throw new RuntimeException(e);
         }
     }
-    public Sheet sheet = xssfWorkbook.getSheet("Faculties");
+    public Sheet sheet = xssfWorkbook.getSheet("Faculties ");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
 
     public void viewFaculties(ActionEvent event) throws IOException {

@@ -38,7 +38,7 @@ public class changePass extends LoginController{
     public String path = "src/UMS_Data.xlsx";
     public FileInputStream fileInputStream = new FileInputStream(path);
     public XSSFWorkbook xssfWorkbook = new XSSFWorkbook(fileInputStream);
-    public Sheet sheet = xssfWorkbook.getSheet("Faculties");
+    public Sheet sheet = xssfWorkbook.getSheet("Faculties ");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
 
     String Oldpass;

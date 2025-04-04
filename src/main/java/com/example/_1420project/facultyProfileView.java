@@ -54,7 +54,7 @@ public class facultyProfileView {
         }
     }
 
-    public Sheet sheet = xssfWorkbook.getSheet("Faculties");
+    public Sheet sheet = xssfWorkbook.getSheet("Faculties ");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
 
     public void facultyViewProfile(ActionEvent event) throws IOException {

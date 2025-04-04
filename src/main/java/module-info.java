@@ -11,4 +11,8 @@ module com.example._1420project {
 
     opens com.example._1420project to javafx.fxml;
     exports com.example._1420project;
+
+    requires org.apache.logging.log4j;
+    requires org.apache.logging.log4j.core;
+
 }

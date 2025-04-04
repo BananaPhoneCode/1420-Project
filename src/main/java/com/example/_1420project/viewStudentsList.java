@@ -56,7 +56,7 @@ public class viewStudentsList {
             throw new RuntimeException(e);
         }
     }
-    public Sheet sheet = xssfWorkbook.getSheet("Students");
+    public Sheet sheet = xssfWorkbook.getSheet("Students ");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
 
     public void viewStudentsList(ActionEvent event) throws IOException {
