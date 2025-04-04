@@ -143,9 +143,11 @@ public class LoginController {
         }
 
         if (username.equals(adminUser) && password.equals(adminPass)) {
+            UserSession.getInstance().setUser(adminUser, "admin"); // Set session!
             assignRole("admin");
             return true;
         }
+
         showInvalidLoginAlert("Invalid username or password. Please try again.");
         return false;
     }

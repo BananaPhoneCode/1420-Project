@@ -135,6 +135,7 @@
       </AnchorPane>
       <Button fx:id="viewProfileButton" layoutX="320.0" layoutY="228.0" mnemonicParsing="false" onAction="#viewStudent" prefHeight="68.0" prefWidth="186.0" text="View Profile" />
       <Button fx:id="editProfileButton" layoutX="551.0" layoutY="228.0" mnemonicParsing="false" onAction="#editStudent" prefHeight="68.0" prefWidth="186.0" text="Edit Profile" />
-      <Button layoutX="431.0" layoutY="359.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="186.0" text="View Grades" />
+      <Button fx:id="changePasswordButton" layoutX="320.0" layoutY="359.0" mnemonicParsing="false" onAction="#openChangePasswordWindow" prefHeight="68.0" prefWidth="186.0" text="Change Password" />
+      <Button fx:id="addStudentButton" layoutX="551.0" layoutY="359.0" mnemonicParsing="false" onAction="#openAddStudentWindow" prefHeight="68.0" prefWidth="186.0" text="Add Student" />
    </children>
 </AnchorPane>
