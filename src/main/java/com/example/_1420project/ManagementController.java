@@ -313,7 +313,6 @@ public class ManagementController implements Initializable {
             currentSubjectList.remove(subjectTable.getSelectionModel().getSelectedItem());
             subjectTableViewList.setAll(currentSubjectList);
             subjectTable.setItems(subjectTableViewList);
-
         }
     }
     public void subjectEditButton(ActionEvent event) throws IOException {
@@ -424,29 +423,19 @@ public class ManagementController implements Initializable {
     }
     //constructor for course
     private Course getCourse() {
-        Course tempCourse;
-        Course tempName;
-        Course tempCode;
-        Course tempSection;
-        Course tempLocation;
-        Course tempTeacher;
-        Course tempCapacity;
-        if(Objects.equals(courseCodeEditTxt.getText(), "")){tempCourse = new Course(courseTable.getSelectionModel().getSelectedItem().getCourseCode(), courseNameEditTxt.getText(), courseSectionEditTxt.getText(), courseLectureEditTxt.getText(), courseCapacityEditTxt.getText(), courseLocationEditTxt.getText(), courseTeacherEditTxt.getText());}
+        Course selected = courseTable.getSelectionModel().getSelectedItem();
 
-        else if(Objects.equals(courseNameEditTxt.getText(), "")){
-            tempCourse = new Course(
-                    courseTable.getSelectionModel().getSelectedItem().getCourseName(), // Keep existing course name
-                    courseCodeEditTxt.getText(),
-                    courseSectionEditTxt.getText(),
-                    courseLectureEditTxt.getText(),
-                    courseCapacityEditTxt.getText(),
-                    courseLocationEditTxt.getText(),
-                    courseTeacherEditTxt.getText()
-            );
-        }
-        else{tempCourse = new Course(courseCodeEditTxt.getText(),courseNameEditTxt.getText(),courseSectionEditTxt.getText(), courseLectureEditTxt.getText(),courseCapacityEditTxt.getText(), courseLocationEditTxt.getText(), courseTeacherTxt.getText());}
-        return tempCourse;
+        String code = courseCodeEditTxt.getText().isEmpty() ? selected.getCourseCode() : courseCodeEditTxt.getText();
+        String name = courseNameEditTxt.getText().isEmpty() ? selected.getCourseName() : courseNameEditTxt.getText();
+        String section = courseSectionEditTxt.getText().isEmpty() ? selected.getCourseSection() : courseSectionEditTxt.getText();
+        String lecture = courseLectureEditTxt.getText().isEmpty() ? selected.getCourseLecture() : courseLectureEditTxt.getText();
+        String capacity = courseCapacityEditTxt.getText().isEmpty() ? selected.getCourseCapacity() : courseCapacityEditTxt.getText();
+        String location = courseLocationEditTxt.getText().isEmpty() ? selected.getCourseLocation() : courseLocationEditTxt.getText();
+        String teacher = courseTeacherEditTxt.getText().isEmpty() ? selected.getCourseTeacher() : courseTeacherEditTxt.getText();
+
+        return new Course(code, name, section, lecture, capacity, location, teacher);
     }
+
     //Search Course
     public void searchCourseList(ActionEvent event) throws IOException {
         courseSearchTableViewList.clear();
@@ -499,48 +488,35 @@ public class ManagementController implements Initializable {
             courseAddButtonState = false;
         }
     }
-
     //new edit button working
-    //new edit button working
-
-//just changed it
     public void courseEditButton(ActionEvent event) throws IOException {
         if (!courseTable.getSelectionModel().getSelectedItems().isEmpty()) {
-            System.err.println("EDIT " + courseTable.getSelectionModel().getSelectedItem().getCourseName());
+            Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
+            int selectedIndex = courseTable.getSelectionModel().getSelectedIndex();
 
-            // Use a single instance of EditCourseList
+            Course updatedCourse = getCourse();
+
+            // Update Excel file
             EditCourseList editCourseList = new EditCourseList();
             editCourseList.Edit(
-                    courseTable.getSelectionModel().getSelectedItem(),
-                    courseCodeEditTxt.getText(),
-                    courseNameEditTxt.getText(),
-                    courseSectionEditTxt.getText(),
-                    courseLectureEditTxt.getText(),
-                    courseCapacityEditTxt.getText(),
-                    courseLocationEditTxt.getText(),
-                    courseTeacherEditTxt.getText()
+                    selectedCourse,
+                    updatedCourse.getCourseCode(),
+                    updatedCourse.getCourseName(),
+                    updatedCourse.getCourseSection(),
+                    updatedCourse.getCourseLecture(),
+                    updatedCourse.getCourseCapacity(),
+                    updatedCourse.getCourseLocation(),
+                    updatedCourse.getCourseTeacher()
             );
 
-            // Remove the old course correctly
-            Iterator<Course> iterator = currentCourseList.iterator();
-            while (iterator.hasNext()) {
-                Course course = iterator.next();
-                if (Objects.equals(course.getCourseCode(), courseTable.getSelectionModel().getSelectedItem().getCourseCode())
-                        || Objects.equals(course.getCourseName(), courseTable.getSelectionModel().getSelectedItem().getCourseName())) {
-                    iterator.remove();
-                    break;
-                }
-            }
+            // Update in lists
+            currentCourseList.set(selectedIndex, updatedCourse);
+            courseTableViewList.set(selectedIndex, updatedCourse);
 
-            // Create and add the updated course
-            Course tempCourse = getCourse();
-            currentCourseList.add(tempCourse);
-            courseTableViewList.set(courseTable.getSelectionModel().getSelectedIndex(), tempCourse);
-
-            // Only set items once
-            courseTable.setItems(courseTableViewList);
+            courseTable.refresh();
         }
     }
 
-
 }
+
+
