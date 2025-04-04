@@ -9,6 +9,7 @@ public class AddStudentController {
     @FXML private ComboBox<String> levelComboBox;
     @FXML private Label statusLabel;
 
+    //manages excel file
     private final EditStudentList studentListHandler;
 
     public AddStudentController() throws IOException {
