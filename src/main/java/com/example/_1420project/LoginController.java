@@ -116,6 +116,7 @@ public class LoginController {
             System.out.println("Checking student username: " + loadedUsername);  // Debugging log to show loaded username
             if (loadedUsername.equals(username)) {
                 if (user.getPassword().equals(password)) {
+                    UserSession.getInstance().setUser(user.getUsername(), "student");
                     assignRole("student");
                     return true;
                 } else {
@@ -131,6 +132,7 @@ public class LoginController {
             System.out.println("Checking faculty username: " + loadedUsername);
             if (loadedUsername.equals(username)) {
                 if (user.getPassword().equals(password)) {
+                    UserSession.getInstance().setUser(user.getUsername(), "faculty");
                     assignRole("faculty");
                     return true;
                 } else {

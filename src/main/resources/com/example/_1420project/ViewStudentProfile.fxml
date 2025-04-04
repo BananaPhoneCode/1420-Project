@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example._1420project.ViewStudentProfileController"
+            prefWidth="450" prefHeight="500">
+    <children>
+        <VBox spacing="10.0" layoutX="20.0" layoutY="20.0" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="20"
+              AnchorPane.rightAnchor="20">
+            <children>
+                <Label text="Student Profile" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+                <Label fx:id="nameLabel" text="Name:"/>
+                <Label fx:id="idLabel" text="ID:"/>
+                <Label fx:id="addressLabel" text="Address:"/>
+                <Label fx:id="telephoneLabel" text="Telephone:"/>
+                <Label fx:id="emailLabel" text="Email:"/>
+                <Label fx:id="levelLabel" text="Level:"/>
+                <Label fx:id="semesterLabel" text="Semester:"/>
+                <Label fx:id="subjectsLabel" text="Subjects:" wrapText="true"/>
+                <Label fx:id="titleLabel" text="Thesis Title:" wrapText="true"/>
+                <Label fx:id="programLabel" text="Program:"/>
+                <Label fx:id="coursesLabel" text="Courses:"/>
+                <Label fx:id="gradesLabel" text="Grades:"/>
+                <Label fx:id="tuitionLabel" text="Tuition:"/>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
