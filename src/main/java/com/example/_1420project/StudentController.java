@@ -48,7 +48,7 @@ public class StudentController {
             studentAddressText.setText(student.getStudentAddress());
             studentTelephoneText.setText(student.getStudentTelephone());
             studentTuitionText.setText(student.getStudentTuition());
-            studentCoursesText.setText(student.getStudentCourses());
+            studentCoursesText.setText(student.getStudentSub());
             studentEmailText.setText(student.getStudentEmail());
             studentGradeText.setText(student.getStudentGrade());
             studentSemText.setText(student.getStudentSem());

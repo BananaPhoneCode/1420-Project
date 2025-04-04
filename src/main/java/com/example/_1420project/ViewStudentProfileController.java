@@ -1,7 +1,12 @@
 package com.example._1420project;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
+import javafx.scene.control.Alert;
 import java.io.IOException;
 
 public class ViewStudentProfileController {
@@ -38,7 +43,7 @@ public class ViewStudentProfileController {
             levelLabel.setText("Academic Level: " + student.getStudentLev());
             semesterLabel.setText("Semester: " + student.getStudentSem());
             subjectsLabel.setText("Subjects: " + student.getStudentSub());
-            progressLabel.setText("Progress: " + student.getStudentCourses());
+            progressLabel.setText("Progress: " + student.getStudentProg());
 
             String level = student.getStudentLev().toLowerCase().trim();
             String tuitionAmount;
@@ -46,20 +51,46 @@ public class ViewStudentProfileController {
 
             if (level.contains("undergraduate")) {
                 tuitionAmount = "$5000";
-                thesisTitle = "N/A";
+                thesisTitle = "N/A"; // undergrads don’t have thesis titles
             } else if (level.contains("graduate")) {
                 tuitionAmount = "$4000";
                 thesisTitle = student.getStudentTitle();
-            } else{
+            } else {
                 tuitionAmount = "Unknown";
                 thesisTitle = "Unknown";
             }
 
-            titleLabel.setText("Thesis Title: " + thesisTitle);
             tuitionLabel.setText("Tuition: " + tuitionAmount);
+            titleLabel.setText("Thesis Title: " + thesisTitle);
 
         } else {
             nameLabel.setText("Student not found.");
         }
+    }
+
+    // ✅ Opens Enrolled Courses Window
+    @FXML
+    private void openEnrolledCoursesWindow() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewEnrolledCourses.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Enrolled Courses");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showError("Failed to open enrolled courses window.");
+        }
+    }
+
+    // 🔴 Reusable alert for errors
+    private void showError(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

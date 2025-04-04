@@ -30,27 +30,15 @@ public class EditStudentList {
             String tempEmail = formatter.formatCellValue(row.getCell(4));     // E: Email
             String tempLev = formatter.formatCellValue(row.getCell(5));       // F: Level
             String tempSem = formatter.formatCellValue(row.getCell(6));       // G: Semester
-            String tempTitle = formatter.formatCellValue(row.getCell(7));     // H: Thesis Title
-            String tempSub = formatter.formatCellValue(row.getCell(8));       // I: Subjects
-            String tempProg = formatter.formatCellValue(row.getCell(9));      // J: Program
-            String tempCourses = formatter.formatCellValue(row.getCell(10));  // K: Courses
+            String tempTitle = formatter.formatCellValue(row.getCell(9));     // J: Thesis Title
+            String tempSub = formatter.formatCellValue(row.getCell(8));       // I: Subjects (also used for courses)
+            String tempProg = formatter.formatCellValue(row.getCell(10));     // K: Progress
             String tempGrade = formatter.formatCellValue(row.getCell(11));    // L: Grades
 
-            // Tuition will be handled in controller
             Student student = new Student(
-                    tempName,
-                    tempId,
-                    tempAddress,
-                    tempTele,
-                    "", // tuition placeholder
-                    tempCourses,
-                    tempEmail,
-                    tempGrade,
-                    tempSem,
-                    tempSub,
-                    tempLev,
-                    tempTitle,
-                    tempProg
+                    tempName, tempId, tempAddress, tempTele, "",     // Tuition handled later
+                    tempSub, tempEmail, tempGrade, tempSem,
+                    tempSub, tempLev, tempTitle, tempProg
             );
 
             if (!tempName.isEmpty()) {
@@ -65,7 +53,7 @@ public class EditStudentList {
         ArrayList<Student> students = Generate();
 
         for (Student student : students) {
-            if (student.getStudentId().equals(studentId)) {
+            if (student.getStudentId().trim().equalsIgnoreCase(studentId.trim())) {
                 return student;
             }
         }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
 <AnchorPane prefHeight="500" prefWidth="450" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example._1420project.ViewStudentProfileController">
     <children>
-        <VBox layoutX="20.0" layoutY="20.0" spacing="10.0" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+        <VBox layoutX="20.0" layoutY="20.0" spacing="10.0"
+              AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
             <children>
                 <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Student Profile" />
 
@@ -17,10 +19,13 @@
                 <Label fx:id="emailLabel" text="Email:" />
                 <Label fx:id="levelLabel" text="Academic Level:" />
                 <Label fx:id="semesterLabel" text="Semester:" />
-                <Label fx:id="subjectsLabel" text="Subjects:" wrapText="true" />
+                <Label fx:id="subjectsLabel" text="Subjects:"  />
                 <Label fx:id="titleLabel" text="Thesis Title:" wrapText="true" />
                 <Label fx:id="progressLabel" text="Progress:" />
                 <Label fx:id="tuitionLabel" text="Tuition:" />
+
+                <!-- 🔘 Enrolled Courses Button -->
+                <Button fx:id="viewEnrolledButton" text="View Enrolled Courses" onAction="#openEnrolledCoursesWindow"/>
             </children>
         </VBox>
     </children>
