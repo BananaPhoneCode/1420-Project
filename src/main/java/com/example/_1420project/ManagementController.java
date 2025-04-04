@@ -185,6 +185,7 @@ public class ManagementController implements Initializable {
         // Menu click event
         menu.setOnMouseClicked(event -> {
             pane1.setVisible(true);
+            pane2.setVisible(true);
             createFadeTransition(pane1, 0, 0.15, ANIMATION_DURATION).play();
             createTranslateTransition(pane2, +600, ANIMATION_DURATION).play();
         });

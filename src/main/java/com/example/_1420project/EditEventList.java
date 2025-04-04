@@ -13,7 +13,7 @@ public class EditEventList {
     public String path = "src/UMS_Data.xlsx";
     public FileInputStream fileInputStream = new FileInputStream(path);
     public XSSFWorkbook xssfWorkbook = new XSSFWorkbook(fileInputStream);
-    Sheet sheet = xssfWorkbook.getSheet("Events ");
+    Sheet sheet = xssfWorkbook.getSheet("Events");
     CreationHelper createHelper = xssfWorkbook.getCreationHelper();
     public EditEventList() throws IOException {
     }
@@ -21,13 +21,13 @@ public class EditEventList {
         String[] EventOUT;
         for(Row row : sheet){
             if(row.getRowNum()==0){continue;}
-            String tempCode = formatter.formatCellValue(row.getCell(0));
-            String tempName = formatter.formatCellValue(row.getCell(1));
-            String tempDescription = formatter.formatCellValue(row.getCell(2));
-            String tempLocation = formatter.formatCellValue(row.getCell(3));
-            String tempDateNTime = formatter.formatCellValue(row.getCell(4));
-            String tempCapacity = formatter.formatCellValue(row.getCell(5));
-            String tempCost = formatter.formatCellValue(row.getCell(6));
+            String tempCode = formatter.formatCellValue(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempName = formatter.formatCellValue(row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempDescription = formatter.formatCellValue(row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempLocation = formatter.formatCellValue(row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempDateNTime = formatter.formatCellValue(row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempCapacity = formatter.formatCellValue(row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+            String tempCost = formatter.formatCellValue(row.getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
             System.err.println(tempCode+tempName+tempDescription+tempLocation+tempDateNTime+tempCapacity+tempCost);
             Event selecEvent = new Event(tempCode,tempName,tempDescription,tempLocation,tempDateNTime,tempCapacity,tempCost);
             EventList.add(selecEvent);
