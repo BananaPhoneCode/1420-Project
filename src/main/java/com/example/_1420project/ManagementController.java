@@ -283,10 +283,13 @@ public class ManagementController implements Initializable {
         }
     }
 
-    public void event(ActionEvent event) throws IOException {
+    public void event(ActionEvent event) {
         try {
+            // Load the FXML file for the Event Management interface
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Event.fxml"));
             Parent root = loader.load();
+
+            // Get the current stage and set the new scene
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -294,9 +297,16 @@ public class ManagementController implements Initializable {
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
-            // Show an error message to the user
+
+            // You can show a simple error dialog to the user if something goes wrong
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("FXML Loading Error");
+            alert.setContentText("There was an error loading the Event Management page. Please try again.");
+            alert.showAndWait();
         }
     }
+
 
     //Subject Page Buttons
     public void subjectAddButton(ActionEvent event) throws IOException {

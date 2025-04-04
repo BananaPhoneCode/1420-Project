@@ -23,6 +23,20 @@ public class facultyController {
 
     public facultyController() throws IOException {
     }
+    public void faculty(ActionEvent event) throws IOException {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("Faculty.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show an error message to the user
+        }
+    }
 
     public class changePass {
         @FXML
@@ -64,11 +78,14 @@ public class facultyController {
                 e.printStackTrace();
                 // Show an error message to the user
             }
-            Oldpass = oldpass.getText();
-            Newpass = newpass.getText();
-            Newpassconf = newpassconf.getText();
 
 
+
+        }
+        public void changePassword() {
+            String Oldpass = oldpass.getText();
+            String Newpass = newpass.getText();
+            String Newpassconf = newpassconf.getText();
             for (Row row : sheet) {
                 Cell password = row.getCell(7);
                 if (Oldpass == password.getStringCellValue() && Newpass == Newpassconf) {
