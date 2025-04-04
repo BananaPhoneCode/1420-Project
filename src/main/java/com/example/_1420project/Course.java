@@ -31,9 +31,7 @@ public class Course{
         return this.CourseSection;
     }
     public String getCourseLecture(){return this.CourseLecture;}
-    public String getCourseCapacity(){return this.CourseLecture;}
-    public String getCourseLocation(){return this.CourseLecture;}
-    public String getCourseTeacher(){return this.CourseLecture;}
-
-
+    public String getCourseCapacity(){return this.CourseCapacity;}
+    public String getCourseLocation(){return this.CourseLocation;}
+    public String getCourseTeacher(){return this.CourseTeacher;}
 }

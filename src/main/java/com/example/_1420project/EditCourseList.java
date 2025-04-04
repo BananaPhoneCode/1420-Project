@@ -25,6 +25,7 @@ public class EditCourseList{
             if(row.getRowNum()==0){
                 continue;
             }
+
             //gets data from desired row
             String tempName = formatter.formatCellValue(row.getCell(0));
             String tempCode = formatter.formatCellValue(row.getCell(1));
@@ -76,27 +77,65 @@ public class EditCourseList{
     //Remove
     public void Remove(Course CourseIN) throws FileNotFoundException {
         for (Row row : sheet) {
-            String tempCode = formatter.formatCellValue(row.getCell(0));
-            String tempName = formatter.formatCellValue(row.getCell(1));
-            if (Objects.equals(CourseIN.getCourseCode(), tempCode) || Objects.equals(CourseIN.getCourseName(), tempName)) {
+            String tempName = formatter.formatCellValue(row.getCell(0));
+            String tempCode = formatter.formatCellValue(row.getCell(1));
+            String tempSection = formatter.formatCellValue(row.getCell(2));
+            String tempLecture = formatter.formatCellValue(row.getCell(3));
+            String tempCapacity = formatter.formatCellValue(row.getCell(4));
+            String tempLocation = formatter.formatCellValue(row.getCell(5));
+            String tempTeacher = formatter.formatCellValue(row.getCell(6));
+
+            if (Objects.equals(CourseIN.getCourseCode(), tempCode) ||
+                    Objects.equals(CourseIN.getCourseName(), tempName) ||
+                    Objects.equals(CourseIN.getCourseSection(), tempSection) ||
+                    Objects.equals(CourseIN.getCourseLecture(), tempLecture) ||
+                    Objects.equals(CourseIN.getCourseCapacity(), tempCapacity) ||
+                    Objects.equals(CourseIN.getCourseLocation(), tempLocation) ||
+                    Objects.equals(CourseIN.getCourseTeacher(), tempTeacher)) {
+
                 row.removeCell(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
                 row.removeCell(row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(2, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
+                row.removeCell(row.getCell(6, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
             }
         }
     }
 
-        //editing functionality
-        public void Edit(Course CourseIN, String CourseCodeIN, String CourseNameIN) throws FileNotFoundException{
+
+    //editing functionality
+        public void Edit(Course CourseIN, String CourseCodeIN, String CourseNameIN, String CourseSectionIN, String CourseLectureIN, String CourseCapacityIN, String CourseLocationIN, String CourseTeacherIN) throws FileNotFoundException{
             for(Row row : sheet) {
                 String tempCode = formatter.formatCellValue(row.getCell(0));
                 String tempName = formatter.formatCellValue(row.getCell(1));
                 String tempSection = formatter.formatCellValue(row.getCell(3));
                 String tempLecture = formatter.formatCellValue(row.getCell(5));
-                if (Objects.equals(CourseIN.getCourseCode(), tempCode) || Objects.equals(CourseIN.getCourseName(), tempName)) {
+                String tempCapacity = formatter.formatCellValue(row.getCell(6));
+                String tempLocation =formatter.formatCellValue(row.getCell(7));
+                String tempTeacher =formatter.formatCellValue(row.getCell(8));
+                if (Objects.equals(CourseIN.getCourseCode(), tempCode) ||
+                        Objects.equals(CourseIN.getCourseName(), tempName) ||
+                        Objects.equals(CourseIN.getCourseSection(), formatter.formatCellValue(row.getCell(3))) ||
+                        Objects.equals(CourseIN.getCourseLecture(), formatter.formatCellValue(row.getCell(5))) ||
+                        Objects.equals(CourseIN.getCourseCapacity(), formatter.formatCellValue(row.getCell(4))) ||
+                        Objects.equals(CourseIN.getCourseLocation(), formatter.formatCellValue(row.getCell(7))) ||
+                        Objects.equals(CourseIN.getCourseTeacher(), formatter.formatCellValue(row.getCell(8)))) {
                     if (!CourseCodeIN.isEmpty())
                         row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseCodeIN);
                     if (!CourseNameIN.isEmpty())
                         row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseNameIN);
+                    if (!CourseSectionIN.isEmpty())
+                        row.getCell(3, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseSectionIN);
+                    if (!CourseLectureIN.isEmpty())
+                        row.getCell(5, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseLectureIN);
+                    if (!CourseCapacityIN.isEmpty())
+                        row.getCell(4, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseCapacityIN);
+                    if (!CourseLocationIN.isEmpty())
+                        row.getCell(7, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseLocationIN);
+                    if (!CourseTeacherIN.isEmpty())
+                        row.getCell(8, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseTeacherIN);
                 }
             }
 
