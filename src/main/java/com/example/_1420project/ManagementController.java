@@ -227,7 +227,6 @@ public class ManagementController implements Initializable {
             // Show an error message to the user
         }
     }
-
     public void subject(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("SubjectAdmin.fxml"));
@@ -447,6 +446,7 @@ public class ManagementController implements Initializable {
     //Start of Course Page Buttons
     //Course Add Method
     public void courseAddButton(ActionEvent event) throws IOException {
+        //This retrieves the list of items (the courses) and displays it in the table.
         courseTable.getItems().add(new Course(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText(), courseCapacityTxt.getText(), courseLocationTxt.getText(), courseTeacherTxt.getText()));
         new EditCourseList().Add(courseCodeTxt.getText(), courseNameTxt.getText(), courseSectionTxt.getText(), courseLectureTxt.getText(), courseCapacityTxt.getText(), courseLocationTxt.getText(), courseTeacherTxt.getText());
     }
@@ -476,7 +476,6 @@ public class ManagementController implements Initializable {
 
         return new Course(code, name, section, lecture, capacity, location, teacher);
     }
-
     //Search Course
     public void searchCourseList(ActionEvent event) throws IOException {
         courseSearchTableViewList.clear();
@@ -532,7 +531,7 @@ public class ManagementController implements Initializable {
     //new edit button working
     public void courseEditButton(ActionEvent event) throws IOException {
         if (!courseTable.getSelectionModel().getSelectedItems().isEmpty()) {
-            Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
+            Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();// returns a list of selected items. If no course is selected, this list will be empty.
             int selectedIndex = courseTable.getSelectionModel().getSelectedIndex();
 
             Course updatedCourse = getCourse();
@@ -550,7 +549,7 @@ public class ManagementController implements Initializable {
                     updatedCourse.getCourseTeacher()
             );
 
-            // Update in lists
+            //Update in lists
             currentCourseList.set(selectedIndex, updatedCourse);
             courseTableViewList.set(selectedIndex, updatedCourse);
             courseTable.refresh();

@@ -80,10 +80,13 @@ public class EditCourseList{
 
 
     //Remove
+    //Course In instance of the class
     public void Remove(Course CourseIN) throws FileNotFoundException {
         for (Row row : sheet) {
             String tempCode = formatter.formatCellValue(row.getCell(0));
             String tempName = formatter.formatCellValue(row.getCell(1));
+            // Check if the provided CourseIN matches either the course code or name in the row
+
             if (Objects.equals(CourseIN.getCourseCode(), tempCode) || Objects.equals(CourseIN.getCourseName(), tempName)) {
                 row.removeCell(row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
                 row.removeCell(row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK));
@@ -108,7 +111,7 @@ public class EditCourseList{
             // Ensure we edit only the correct course (Matching both Code and Name)
             if (Objects.equals(CourseIN.getCourseCode(), tempCode) && Objects.equals(CourseIN.getCourseName(), tempName)) {
                 if (!CourseCodeIN.trim().isEmpty())
-                    row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseCodeIN);
+                    row.getCell(1, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseCodeIN); //sets the value of that input to the second cell
                 if (!CourseNameIN.trim().isEmpty())
                     row.getCell(0, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK).setCellValue(CourseNameIN);
                 if (!CourseSectionIN.trim().isEmpty())
