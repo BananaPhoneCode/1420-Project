@@ -142,7 +142,7 @@
             </VBox>
          </children>
       </AnchorPane>
-      <TableView fx:id="courseTable" layoutX="236.0" layoutY="98.0" prefHeight="430.0" prefWidth="540.0">
+      <TableView fx:id="courseTable" layoutX="175.0" layoutY="99.0" prefHeight="430.0" prefWidth="590.0">
         <columns>
           <TableColumn fx:id="CourseCode" prefWidth="115.20001220703125" text="Course Name" />
           <TableColumn fx:id="CourseName" prefWidth="73.5999755859375" text="Course Code" />
@@ -150,14 +150,12 @@
             <TableColumn fx:id="CourseSection" minWidth="2.39996337890625" prefWidth="65.5999755859375" text="Sections" />
             <TableColumn fx:id="CourseCapacity" prefWidth="75.0" text="Capacity" />
             <TableColumn fx:id="CourseLocation" prefWidth="57.5999755859375" text="Location" />
-            <TableColumn fx:id="CourseTeacher" prefWidth="95.99993896484375" text="Teacher" />
+            <TableColumn fx:id="CourseTeacher" prefWidth="79.2000732421875" text="Teacher" />
         </columns>
       </TableView>
       <Button layoutX="189.0" layoutY="530.0" mnemonicParsing="false" onAction="#courseAddButton" text="Add Course" />
       <TextField fx:id="courseNameTxt" layoutX="441.0" layoutY="535.0" prefHeight="26.0" prefWidth="78.0" />
       <Label layoutX="374.0" layoutY="539.0" text="Add name:" />
-      <TextField fx:id="courseCodeTxt" layoutX="441.0" layoutY="570.0" prefHeight="26.0" prefWidth="78.0" />
-      <Label layoutX="377.0" layoutY="574.0" text="Add code:" />
       <Button layoutX="190.0" layoutY="566.0" mnemonicParsing="false" onAction="#courseEditButton" text="Edit Course" />
 
       <Button layoutX="183.0" layoutY="599.0" mnemonicParsing="false" onAction="#courseRemoveButton" text="Delete Course" />

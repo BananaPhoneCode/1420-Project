@@ -65,7 +65,7 @@ public class ManagementController implements Initializable {
 
     //COURSE PAGE - AISHA
     //Course Class @ FXML;
-    //Course Table
+    //ALL Table columns
     @FXML
     private TableView<Course> courseTable = new TableView<>();
     @FXML
@@ -522,7 +522,6 @@ public class ManagementController implements Initializable {
             // Update in lists
             currentCourseList.set(selectedIndex, updatedCourse);
             courseTableViewList.set(selectedIndex, updatedCourse);
-
             courseTable.refresh();
         }
     }

@@ -1,15 +1,19 @@
 package com.example._1420project;
 
+import java.util.ArrayList;
+import java.util.List;
+
+    //constructor
 public class Course{
     private final String CourseName;
     private final String CourseCode;
     private final String CourseSection;
     private final String CourseLecture;
-    //private final String courseSubjectName;
     private final String CourseCapacity;
     private final String CourseLocation;
     private final String CourseTeacher;
 
+    //constructor
     public Course(String CN, String CC, String CS, String LT, String CCA,String CL,String CT){
         this.CourseName = CN;
         this.CourseCode = CC;
@@ -18,7 +22,6 @@ public class Course{
         this.CourseCapacity = CCA;
         this.CourseLocation= CL;
         this.CourseTeacher = CT;
-
     }
     //getters
     public String getCourseName(){
@@ -35,3 +38,4 @@ public class Course{
     public String getCourseLocation(){return this.CourseLocation;}
     public String getCourseTeacher(){return this.CourseTeacher;}
 }
+
