@@ -162,7 +162,7 @@ public class ManagementController implements Initializable {
         SubjectName.setCellValueFactory(new PropertyValueFactory<Subject, String>("SubjectName"));
         subjectTable.setItems(subjectTableViewList);
         //if(!Objects.equals(UserSession.getInstance().getRole(), "admin")){subjectAdminMenu.setVisible(false);}
-        if(!Objects.equals(UserSession.getInstance().getRole(), "admin")){CourseAdminMenu.setVisible(false);}
+        //if(!Objects.equals(UserSession.getInstance().getRole(), "admin")){CourseAdminMenu.setVisible(false);}
 
         //COURSE
         //Course Table Setup
